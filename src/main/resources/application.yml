@@ -1,0 +1,7 @@
+quarkus:
+  banner:
+    enabled: false
+  log:
+    category:
+      "io.quarkus":
+        level: warn
