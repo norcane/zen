@@ -10,13 +10,15 @@
     <properties>
         <compiler-plugin.version>3.8.1</compiler-plugin.version>
         <failsafe.useModulePath>false</failsafe.useModulePath>
-        <maven.compiler.release>11</maven.compiler.release>
+        <maven.compiler.release>17</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
         <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
         <quarkus.platform.version>2.9.2.Final</quarkus.platform.version>
         <surefire-plugin.version>3.0.0-M5</surefire-plugin.version>
+
+        <mustache.java.version>0.9.10</mustache.java.version>
     </properties>
 
     <dependencyManagement>
@@ -32,6 +34,7 @@
     </dependencyManagement>
 
     <dependencies>
+        <!-- QUARKUS DEPENDENCIES -->
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-config-yaml</artifactId>
@@ -45,6 +48,14 @@
             <artifactId>quarkus-picocli</artifactId>
         </dependency>
 
+        <!-- OTHER DEPENDENCIES -->
+        <dependency>
+            <groupId>com.github.spullara.mustache.java</groupId>
+            <artifactId>compiler</artifactId>
+            <version>${mustache.java.version}</version>
+        </dependency>
+
+        <!-- TEST DEPENDENCIES -->
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-junit5</artifactId>
