@@ -6,6 +6,9 @@ import com.norcane.zen.meta.ProductInfo;
 import io.quarkus.picocli.runtime.annotations.TopCommand;
 import picocli.CommandLine;
 
+/**
+ * Initial entry point of the CLI application.
+ */
 @TopCommand
 @CommandLine.Command(
     name = ProductInfo.NAME,

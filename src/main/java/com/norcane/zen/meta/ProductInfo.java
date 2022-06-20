@@ -1,5 +1,8 @@
 package com.norcane.zen.meta;
 
+/**
+ * General information about the application. Where possible, such information is extracted from <i>Maven</i> project files.
+ */
 public class ProductInfo {
 
     public static final String NAME = BuildInfo.NAME;
