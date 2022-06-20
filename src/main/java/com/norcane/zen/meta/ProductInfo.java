@@ -2,9 +2,12 @@ package com.norcane.zen.meta;
 
 public class ProductInfo {
 
-    public static final String PRODUCT_NAME = BuildInfo.NAME;
-    public static final String PRODUCT_VERSION = BuildInfo.VERSION;
-    public static final String PRODUCT_WEBSITE = "https://github.com/norcane/zen";
-    public static final String PRODUCT_HEADER =
-        "Welcome to @|bold,magenta " + PRODUCT_NAME + " " + PRODUCT_VERSION + "|@ :: @|underline " + PRODUCT_WEBSITE + "|@";
+    public static final String NAME = BuildInfo.NAME;
+    public static final String DESCRIPTION = BuildInfo.DESCRIPTION;
+    public static final String VERSION = BuildInfo.VERSION;
+    public static final String WEBSITE = "https://github.com/norcane/zen";
+
+    public static String productHeader() {
+        return String.format("Welcome to @|bold,magenta %s %s|@ :: @|underline %s|@", NAME, VERSION, WEBSITE);
+    }
 }

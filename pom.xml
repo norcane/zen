@@ -6,6 +6,7 @@
     <groupId>com.norcane.zen</groupId>
     <artifactId>zen</artifactId>
     <version>0.1.0-SNAPSHOT</version>
+    <description>Source code copyright header manager</description>
 
     <properties>
         <compiler-plugin.version>3.8.1</compiler-plugin.version>
