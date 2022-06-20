@@ -13,4 +13,8 @@ public class ProductInfo {
     public static String productHeader() {
         return String.format("Welcome to @|bold,magenta %s %s|@ :: @|underline %s|@", NAME, VERSION, WEBSITE);
     }
+
+    public static SemVer productVersion() {
+        return SemVer.from(VERSION);
+    }
 }
