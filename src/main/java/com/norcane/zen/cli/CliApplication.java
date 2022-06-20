@@ -1,5 +1,7 @@
 package com.norcane.zen.cli;
 
+import com.norcane.zen.meta.ProductInfo;
+
 import io.quarkus.picocli.runtime.annotations.TopCommand;
 import picocli.CommandLine;
 
@@ -10,7 +12,13 @@ import picocli.CommandLine;
     description = "Manager for copyright/license headers")
 public class CliApplication {
 
-    @CommandLine.Command(name = "run", description = "adds copyright headers")
+    @CommandLine.Spec
+    private CommandLine.Model.CommandSpec spec;
+
+    @CommandLine.Command(
+        name = "run",
+        description = "adds copyright headers",
+        header = ProductInfo.PRODUCT_HEADER)
     public void runCommand() {
         System.out.println("RUN command");
     }
