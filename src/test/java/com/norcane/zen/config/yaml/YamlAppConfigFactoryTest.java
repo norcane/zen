@@ -14,45 +14,41 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class YamlAppConfigFactoryTest {
 
+    private final YamlAppConfigFactory factory = new YamlAppConfigFactory();
+
     @Test
-    public void testGetMinCompatibleVersion() {
-        final String yamlValidVersion =
+    public void testFileExtension() {
+        assertEquals("yaml", factory.fileExtension());
+    }
+
+    @Test
+    public void testMinCompatibleVersion() {
+        final Reader yamlValidVersion = new StringReader(
             """
                 version: 0.1.0
                 foo: bar
-                """;
-        final String yamlMissingVersion =
+                """);
+        final Reader yamlMissingVersion = new StringReader(
             """
                 foo: bar
-                """;
+                """);
 
-        assertEquals(SemVer.from("0.1.0"), testFactory(yamlValidVersion).getMinCompatibleVersion());
-        assertThrows(MissingConfigVersionException.class, () -> testFactory(yamlMissingVersion).getMinCompatibleVersion());
+        assertEquals(SemVer.from("0.1.0"), factory.minCompatibleVersion(yamlValidVersion, null));
+        assertThrows(MissingConfigVersionException.class, () -> factory.minCompatibleVersion(yamlMissingVersion, null));
 
     }
 
     @Test
     public void testParse() {
-        final String yaml =
+        final Reader yaml = new StringReader(
             """
                 version: 0.1.0
                 foo: "bar"
-                """;
+                """);
 
-        final YamlAppConfigFactory factory = testFactory(yaml);
-        final AppConfig appConfig = factory.parse();
+        final AppConfig appConfig = factory.parse(yaml, null);
 
         assertEquals(SemVer.from("0.1.0"), appConfig.version());
 
-    }
-
-    private static YamlAppConfigFactory testFactory(String yaml) {
-        return new YamlAppConfigFactory() {
-
-            @Override
-            protected Reader configFileReader() {
-                return new StringReader(yaml);
-            }
-        };
     }
 }

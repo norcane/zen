@@ -10,9 +10,6 @@ import com.norcane.zen.config.exception.ConfigParseException;
 import com.norcane.zen.config.exception.MissingConfigVersionException;
 import com.norcane.zen.meta.SemVer;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.Reader;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -20,65 +17,41 @@ import javax.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class YamlAppConfigFactory implements AppConfigFactory {
 
-    private static final String CONFIG_FORMAT = "YAML";
-    private static final String FILENAME = "zen.yaml";
-
-    private static final File configFile = new File(System.getProperty("user.dir"), FILENAME);
-
-    private SemVer configVersion;
+    private static final String FILE_EXTENSION = "yaml";
 
     @Override
-    public String getConfigFormat() {
-        return CONFIG_FORMAT;
+    public String fileExtension() {
+        return FILE_EXTENSION;
     }
 
     @Override
-    public String getConfigSource() {
-        return configFile.toString();
-    }
-
-    @Override
-    public SemVer getMinCompatibleVersion() {
-        if (configVersion == null) {
-            final VersionObject versionObject;
-            try {
-                final ObjectMapper objectMapper = objectMapper();
-
-                versionObject = objectMapper.readValue(configFileReader(), VersionObject.class);
-            } catch (Throwable t) {
-                t.printStackTrace();
-                throw new ConfigParseException(getConfigSource(), t);
-            }
-
-            if (versionObject.version() == null) {
-                throw new MissingConfigVersionException(getConfigSource());
-            }
-            configVersion = versionObject.version();
+    public SemVer minCompatibleVersion(Reader source, String sourceName) {
+        final VersionWrapper wrapper;
+        try {
+            wrapper = objectMapper().readValue(source, VersionWrapper.class);
+        } catch (Throwable t) {
+            t.printStackTrace();
+            throw new ConfigParseException(sourceName, t);
         }
 
-        return configVersion;
+        if (wrapper.version() == null) {
+            throw new MissingConfigVersionException(sourceName);
+        }
+
+        return wrapper.version();
     }
 
     @Override
-    public AppConfig parse() {
+    public AppConfig parse(Reader source, String sourceName) {
         try {
             final ObjectMapper objectMapper = objectMapper();
-            return objectMapper.readValue(configFileReader(), AppConfig.class);
+            return objectMapper.readValue(source, AppConfig.class);
         } catch (Throwable t) {
-            throw new ConfigParseException(getConfigSource(), t);
-        }
-    }
-
-    protected Reader configFileReader() {
-        try {
-            return new FileReader(configFile);
-        } catch (IOException e) {
-            throw new ConfigParseException(configFile.toString(), e);
+            throw new ConfigParseException(sourceName, t);
         }
     }
 
     private ObjectMapper objectMapper() {
-
         final SimpleModule module = new SimpleModule()
             .addDeserializer(SemVer.class, new SemVerDeserializer());
 
@@ -87,7 +60,6 @@ public class YamlAppConfigFactory implements AppConfigFactory {
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
-    public record VersionObject(SemVer version) {
-
+    protected record VersionWrapper(SemVer version) {
     }
 }
