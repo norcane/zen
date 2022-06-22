@@ -5,9 +5,18 @@ import com.norcane.zen.meta.SemVer;
 
 public class IncompatibleAppConfigVersionException extends ZenRuntimeException {
 
+    private final SemVer minimum;
+    private final SemVer found;
+
     public IncompatibleAppConfigVersionException(SemVer minimum, SemVer found) {
-        super("Incompatible version of configuration (minimum required: %s, found: %s)".formatted(minimum.toPretty(), found.toPretty()));
+        super();
+        this.minimum = minimum;
+        this.found = found;
     }
 
 
+    @Override
+    public String toPretty() {
+        return "Incompatible version of configuration (minimum required: %s, found: %s)".formatted(minimum.toPretty(), found.toPretty());
+    }
 }

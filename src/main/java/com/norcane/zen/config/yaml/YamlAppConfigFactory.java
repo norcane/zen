@@ -8,16 +8,31 @@ import com.norcane.zen.config.AppConfig;
 import com.norcane.zen.config.AppConfigFactory;
 import com.norcane.zen.config.exception.ConfigParseException;
 import com.norcane.zen.config.exception.MissingConfigVersionException;
+import com.norcane.zen.config.yaml.mapper.YamlAppConfigMapper;
+import com.norcane.zen.config.yaml.model.VersionWrapper;
+import com.norcane.zen.config.yaml.model.YamlAppConfig;
 import com.norcane.zen.meta.SemVer;
+
+import org.jboss.logging.Logger;
 
 import java.io.Reader;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class YamlAppConfigFactory implements AppConfigFactory {
 
+    private static final Logger logger = Logger.getLogger(YamlAppConfigFactory.class);
+
     private static final String FILE_EXTENSION = "yaml";
+
+    private final YamlAppConfigMapper mapper;
+
+    @Inject
+    public YamlAppConfigFactory(YamlAppConfigMapper mapper) {
+        this.mapper = mapper;
+    }
 
     @Override
     public String fileExtension() {
@@ -34,18 +49,20 @@ public class YamlAppConfigFactory implements AppConfigFactory {
             throw new ConfigParseException(sourceName, t);
         }
 
-        if (wrapper.version() == null) {
+        if (wrapper.minCompatibleVersion() == null) {
             throw new MissingConfigVersionException(sourceName);
         }
 
-        return wrapper.version();
+        return wrapper.minCompatibleVersion();
     }
 
     @Override
     public AppConfig parse(Reader source, String sourceName) {
+        logger.debug("Parsing YAML configuration from %s".formatted(sourceName));
+
         try {
             final ObjectMapper objectMapper = objectMapper();
-            return objectMapper.readValue(source, AppConfig.class);
+            return mapper.map(objectMapper.readValue(source, YamlAppConfig.class));
         } catch (Throwable t) {
             throw new ConfigParseException(sourceName, t);
         }
@@ -58,8 +75,5 @@ public class YamlAppConfigFactory implements AppConfigFactory {
         return new ObjectMapper(new YAMLFactory())
             .registerModule(module)
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-    }
-
-    protected record VersionWrapper(SemVer version) {
     }
 }

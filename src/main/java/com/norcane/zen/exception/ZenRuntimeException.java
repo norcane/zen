@@ -1,6 +1,12 @@
 package com.norcane.zen.exception;
 
-public class ZenRuntimeException extends RuntimeException {
+import com.norcane.zen.ui.PrettyPrintable;
+
+public abstract class ZenRuntimeException extends RuntimeException implements PrettyPrintable {
+
+    public ZenRuntimeException() {
+        super();
+    }
 
     public ZenRuntimeException(String message) {
         super(message);

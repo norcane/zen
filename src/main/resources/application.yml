@@ -5,3 +5,7 @@ quarkus:
     category:
       "io.quarkus":
         level: warn
+  native:
+    resources:
+      includes:
+        - config/**

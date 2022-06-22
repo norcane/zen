@@ -5,5 +5,5 @@ import com.norcane.zen.meta.SemVer;
 /**
  * Represents application configuration.
  */
-public record AppConfig(SemVer version) {
+public record AppConfig(SemVer minCompatibleVersion) {
 }

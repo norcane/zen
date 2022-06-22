@@ -1,6 +1,5 @@
 package com.norcane.zen.config.yaml;
 
-import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.TreeNode;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -12,7 +11,6 @@ import java.io.IOException;
 
 public class SemVerDeserializer extends StdDeserializer<SemVer> {
 
-
     public SemVerDeserializer() {
         this(null);
     }
@@ -22,9 +20,7 @@ public class SemVerDeserializer extends StdDeserializer<SemVer> {
     }
 
     @Override
-    public SemVer deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
-        throws IOException, JacksonException {
-
+    public SemVer deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         final TreeNode treeNode = jsonParser.getCodec().readTree(jsonParser);
         final String version = ((TextNode) treeNode).asText();
 
