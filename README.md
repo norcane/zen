@@ -12,3 +12,11 @@
 <p align="center">
 :construction::construction: Pure Awesomeness Coming Soon! :construction::construction:
 </p>
+
+<div align="center">
+
+[![Supported JVM Versions](https://img.shields.io/badge/Java-17-brightgreen.svg?style=for-the-badge&logo=Java)](https://github.com/norcane/zen/)
+[![Commits](https://img.shields.io/github/commit-activity/m/norcane/zen.svg?label=commits&style=for-the-badge)](https://github.com/norcane/zen/pulse)
+[![License](https://img.shields.io/github/license/norcane/zen?style=for-the-badge)](https://opensource.org/licenses/BSD-3-Clause)
+
+</div>
