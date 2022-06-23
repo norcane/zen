@@ -5,6 +5,8 @@ quarkus:
     category:
       "io.quarkus":
         level: warn
+      "com.norcane.zen":
+        level: "off"
   native:
     resources:
       includes:
