@@ -2,6 +2,7 @@ package com.norcane.zen.config.exception;
 
 import com.norcane.zen.exception.ZenRuntimeException;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,18 +16,28 @@ public class NoConfigFileFoundException extends ZenRuntimeException {
     }
 
     @Override
-    public String toPretty() {
-        final String paths = possibleConfigFilePaths
+    protected String problem() {
+        return "No valid configuration file found.";
+    }
+
+    @Override
+    protected String solution() {
+        final String listOfPaths = possibleConfigFilePaths
             .stream()
             .map("  - @|bold %s|@"::formatted)
             .collect(Collectors.joining("\n"));
 
         return """
-            No configuration file found. Expected one of those configuration files:
+            One of the following configuration files is expected to exist:
                         
             %s
                         
-            For more details, follow official documentation.
-            """.formatted(paths);
+            Please create one.
+            """.strip().formatted(listOfPaths);
+    }
+
+    @Override
+    protected List<String> links() {
+        return Collections.emptyList();
     }
 }
