@@ -25,7 +25,7 @@ public class RunCommand extends SubCommand {
         printProductHeader();
 
         System.out.println("RUN command here");
-        final AppConfig appConfig = appConfigManager.loadDefaultConfig();
+        final AppConfig appConfig = appConfigManager.userConfig();
         System.out.println(appConfig);
     }
 }

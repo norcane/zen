@@ -17,13 +17,9 @@ import java.util.Objects;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
-import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 
-import io.quarkus.arc.Unremovable;
-
 @ApplicationScoped
-@Unremovable    // TODO remove when used somewhere
 public class AppConfigManager {
 
     private static final Logger logger = Logger.getLogger(AppConfigManager.class);
@@ -33,71 +29,83 @@ public class AppConfigManager {
 
     private final Instance<AppConfigFactory> factories;
 
+    private AppConfig defaultConfig;
+    private AppConfig userConfig;
+    private AppConfig finalConfig;
+
     @Inject
     public AppConfigManager(Instance<AppConfigFactory> factories) {
         this.factories = factories;
     }
 
-    public AppConfig loadDefaultConfig() {
-        final String defaultConfigExtension = DEFAULT_CONFIG_PATH.substring(DEFAULT_CONFIG_PATH.lastIndexOf(".") + 1);
-        final InputStreamReader source = new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream(DEFAULT_CONFIG_PATH)));
+    public AppConfig defaultConfig() {
+        if (defaultConfig == null) {
+            final String defaultConfigExtension = DEFAULT_CONFIG_PATH.substring(DEFAULT_CONFIG_PATH.lastIndexOf(".") + 1);
+            final InputStreamReader source = new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream(DEFAULT_CONFIG_PATH)));
 
-        return factories
-            .stream()
-            .filter(factory -> factory.fileExtension().equals(defaultConfigExtension))
-            .map(factory -> factory.parse(source, DEFAULT_CONFIG_PATH))
-            .findAny()
-            .orElseThrow();     // if here no configuration is loaded, it's probably a bug and should be found in unit tests
+            defaultConfig = factories
+                .stream()
+                .filter(factory -> factory.fileExtension().equals(defaultConfigExtension))
+                .map(factory -> factory.parse(source, DEFAULT_CONFIG_PATH))
+                .findAny()
+                .orElseThrow();
+        }
+
+        return defaultConfig;
     }
 
-    public AppConfig loadUserConfig() {
-        final List<AppConfigFactory> availableFactories = factories
-            .stream()
-            .filter(factory -> new File(userConfigPath(factory.fileExtension())).isFile())
-            .toList();
-
-        // check that there is exactly one config file
-        if (availableFactories.size() == 0) {
-            final List<String> possibleConfigFilePaths = factories
+    public AppConfig userConfig() {
+        if (userConfig == null) {
+            final List<AppConfigFactory> availableFactories = factories
                 .stream()
-                .map(factory -> userConfigPath(factory.fileExtension()))
+                .filter(factory -> new File(userConfigPath(factory.fileExtension())).isFile())
                 .toList();
 
-            throw new NoConfigFileFoundException(possibleConfigFilePaths);
-        } else if (availableFactories.size() > 1) {
-            final List<String> foundConfigFilePaths = availableFactories
-                .stream()
-                .map(factory -> userConfigPath(factory.fileExtension()))
-                .toList();
+            // check that there is exactly one config file
+            if (availableFactories.size() == 0) {
+                final List<String> possibleConfigFilePaths = factories
+                    .stream()
+                    .map(factory -> userConfigPath(factory.fileExtension()))
+                    .toList();
 
-            throw new MultipleConfigFilesFoundException(foundConfigFilePaths);
+                throw new NoConfigFileFoundException(possibleConfigFilePaths);
+            } else if (availableFactories.size() > 1) {
+                final List<String> foundConfigFilePaths = availableFactories
+                    .stream()
+                    .map(factory -> userConfigPath(factory.fileExtension()))
+                    .toList();
+
+                throw new MultipleConfigFilesFoundException(foundConfigFilePaths);
+            }
+
+            final AppConfigFactory factory = availableFactories.get(0);
+            final File configFile = new File(userConfigPath(factory.fileExtension()));
+
+            // TODO config compatibility check
+
+            try {
+                userConfig = factory.parse(new FileReader(configFile), configFile.getAbsolutePath());
+            } catch (IOException e) {
+                throw new UncheckedIOException(e);
+            }
         }
 
-        final AppConfigFactory factory = availableFactories.get(0);
-        final File configFile = new File(userConfigPath(factory.fileExtension()));
+        return userConfig;
+    }
 
-        // TODO config compatibility check
-
-        try {
-            return factory.parse(new FileReader(configFile), configFile.getAbsolutePath());
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
+    public AppConfig finalConfig() {
+        if (finalConfig == null) {
+            final AppConfig defaultConfig = defaultConfig();
+            final AppConfig userConfig = userConfig();
+            // TODO config merger
         }
+
+        return finalConfig;
     }
 
     protected String userConfigPath(String extension) {
         final String currentWorkingDir = System.getProperty("user.dir");
 
         return currentWorkingDir + File.separator + CONFIG_FILE_NAME + "." + extension;
-    }
-
-    @Produces
-    @ApplicationScoped
-    public AppConfig loadMergedConfig() {
-        final AppConfig defaultConfig = loadDefaultConfig();
-        final AppConfig userConfig = loadUserConfig();
-
-        // TODO config merger
-        return null;
     }
 }

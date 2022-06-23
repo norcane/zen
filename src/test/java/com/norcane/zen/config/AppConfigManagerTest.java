@@ -24,15 +24,15 @@ public class AppConfigManagerTest {
     AppConfigManager appConfigManager;
 
     @Test
-    public void testLoadDefaultConfig() {
-        final AppConfig config = appConfigManager.loadDefaultConfig();
+    public void testDefaultConfig() {
+        final AppConfig config = appConfigManager.defaultConfig();
 
         assertNotNull(config);
         assertEquals(SemVer.from("0.1.0"), config.minCompatibleVersion());
     }
 
     @Test
-    public void testLoadUserConfig() throws Exception {
+    public void testUserConfig() throws Exception {
         final String nonExistingConfigPath = "/foo/bar.yaml";
         final String defaultConfigPath = "/config/default-config.yaml";
 
@@ -42,10 +42,10 @@ public class AppConfigManagerTest {
             Paths.get(Objects.requireNonNull(getClass().getResource(defaultConfigPath)).toURI()).toAbsolutePath().toString());
 
         // test case when no configuration is present
-        assertThrows(NoConfigFileFoundException.class, appConfigManager::loadUserConfig);
+        assertThrows(NoConfigFileFoundException.class, appConfigManager::userConfig);
 
         // test loading of existing configuration
-        final AppConfig userConfig = appConfigManager.loadUserConfig();
+        final AppConfig userConfig = appConfigManager.userConfig();
         assertNotNull(userConfig);
         assertEquals(SemVer.from("0.1.0"), userConfig.minCompatibleVersion());
     }
