@@ -4,6 +4,7 @@ package com.norcane.zen.config;
 import com.norcane.zen.config.exception.MultipleConfigFilesFoundException;
 import com.norcane.zen.config.exception.NoConfigFileFoundException;
 import com.norcane.zen.meta.ProductInfo;
+import com.norcane.zen.ui.Console;
 
 import org.jboss.logging.Logger;
 
@@ -28,14 +29,18 @@ public class AppConfigManager {
     private static final String CONFIG_FILE_NAME = ProductInfo.NAME;
 
     private final Instance<AppConfigFactory> factories;
+    private final Console console;
 
     private AppConfig defaultConfig;
     private AppConfig userConfig;
     private AppConfig finalConfig;
 
     @Inject
-    public AppConfigManager(Instance<AppConfigFactory> factories) {
+    public AppConfigManager(Instance<AppConfigFactory> factories,
+                            Console console) {
+
         this.factories = factories;
+        this.console = console;
     }
 
     public AppConfig defaultConfig() {
@@ -85,6 +90,7 @@ public class AppConfigManager {
 
             try {
                 userConfig = factory.parse(new FileReader(configFile), configFile.getAbsolutePath());
+                console.print("Loaded user configuration file: " + configFile.getAbsolutePath());
             } catch (IOException e) {
                 throw new UncheckedIOException(e);
             }

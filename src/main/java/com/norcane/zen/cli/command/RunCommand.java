@@ -26,7 +26,6 @@ public class RunCommand extends SubCommand {
 
     @Override
     public void execute() {
-        System.out.println("RUN command here");
         final AppConfig appConfig = appConfigManager.userConfig();
         System.out.println(appConfig);
     }
