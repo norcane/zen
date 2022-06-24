@@ -4,10 +4,11 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.norcane.zen.config.AppConfig;
 import com.norcane.zen.config.AppConfigFactory;
-import com.norcane.zen.config.data.AppConfig;
 import com.norcane.zen.config.exception.ConfigParseException;
 import com.norcane.zen.config.exception.MissingConfigVersionException;
+import com.norcane.zen.config.yaml.mapper.YamlAppConfigMapper;
 import com.norcane.zen.config.yaml.model.VersionWrapper;
 import com.norcane.zen.config.yaml.model.YamlAppConfig;
 import com.norcane.zen.meta.SemVer;
@@ -17,6 +18,7 @@ import org.jboss.logging.Logger;
 import java.io.Reader;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class YamlAppConfigFactory implements AppConfigFactory {
@@ -24,6 +26,13 @@ public class YamlAppConfigFactory implements AppConfigFactory {
     private static final Logger logger = Logger.getLogger(YamlAppConfigFactory.class);
 
     private static final String FILE_EXTENSION = "yaml";
+
+    private final YamlAppConfigMapper mapper;
+
+    @Inject
+    public YamlAppConfigFactory(YamlAppConfigMapper mapper) {
+        this.mapper = mapper;
+    }
 
     @Override
     public String fileExtension() {
@@ -53,7 +62,7 @@ public class YamlAppConfigFactory implements AppConfigFactory {
 
         try {
             final ObjectMapper objectMapper = objectMapper();
-            return objectMapper.readValue(source, YamlAppConfig.class);
+            return mapper.map(objectMapper.readValue(source, YamlAppConfig.class));
         } catch (Throwable t) {
             throw new ConfigParseException(sourceName, t);
         }

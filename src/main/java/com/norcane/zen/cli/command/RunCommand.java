@@ -1,7 +1,7 @@
 package com.norcane.zen.cli.command;
 
+import com.norcane.zen.config.AppConfig;
 import com.norcane.zen.config.AppConfigManager;
-import com.norcane.zen.config.data.AppConfig;
 import com.norcane.zen.ui.Console;
 
 import javax.inject.Inject;
