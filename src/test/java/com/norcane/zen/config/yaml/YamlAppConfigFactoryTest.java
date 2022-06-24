@@ -1,6 +1,6 @@
 package com.norcane.zen.config.yaml;
 
-import com.norcane.zen.config.AppConfig;
+import com.norcane.zen.config.data.AppConfig;
 import com.norcane.zen.config.exception.MissingConfigVersionException;
 import com.norcane.zen.meta.SemVer;
 

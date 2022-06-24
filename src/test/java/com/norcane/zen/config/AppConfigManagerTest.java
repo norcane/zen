@@ -1,5 +1,6 @@
 package com.norcane.zen.config;
 
+import com.norcane.zen.config.data.AppConfig;
 import com.norcane.zen.config.exception.NoConfigFileFoundException;
 import com.norcane.zen.meta.SemVer;
 
