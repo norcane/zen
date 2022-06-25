@@ -1,6 +1,6 @@
 package com.norcane.zen.config.yaml.mapper;
 
-import com.norcane.zen.config.AppConfig;
+import com.norcane.zen.config.model.AppConfig;
 import com.norcane.zen.config.yaml.model.YamlAppConfig;
 
 import org.mapstruct.Mapper;

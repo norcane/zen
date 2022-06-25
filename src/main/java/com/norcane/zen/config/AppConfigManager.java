@@ -1,8 +1,10 @@
 package com.norcane.zen.config;
 
 
+import com.norcane.zen.config.exception.InvalidConfigurationException;
 import com.norcane.zen.config.exception.MultipleConfigFilesFoundException;
 import com.norcane.zen.config.exception.NoConfigFileFoundException;
+import com.norcane.zen.config.model.AppConfig;
 import com.norcane.zen.meta.ProductInfo;
 import com.norcane.zen.ui.Console;
 
@@ -15,10 +17,13 @@ import java.io.InputStreamReader;
 import java.io.UncheckedIOException;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 
 @ApplicationScoped
 public class AppConfigManager {
@@ -30,6 +35,7 @@ public class AppConfigManager {
 
     private final Instance<AppConfigFactory> factories;
     private final Console console;
+    private final Validator validator;
 
     private AppConfig defaultConfig;
     private AppConfig userConfig;
@@ -37,10 +43,12 @@ public class AppConfigManager {
 
     @Inject
     public AppConfigManager(Instance<AppConfigFactory> factories,
-                            Console console) {
+                            Console console,
+                            Validator validator) {
 
         this.factories = factories;
         this.console = console;
+        this.validator = validator;
     }
 
     public AppConfig defaultConfig() {
@@ -103,7 +111,15 @@ public class AppConfigManager {
         if (finalConfig == null) {
             final AppConfig defaultConfig = defaultConfig();
             final AppConfig userConfig = userConfig();
-            // TODO config merger
+            final AppConfig mergedConfig = defaultConfig.merge(userConfig);
+
+            // FIXME validate config
+            final Set<ConstraintViolation<AppConfig>> violations = validator.validate(mergedConfig);
+            if (!violations.isEmpty()) {
+                throw new InvalidConfigurationException(violations);
+            }
+
+            finalConfig = mergedConfig;
         }
 
         return finalConfig;

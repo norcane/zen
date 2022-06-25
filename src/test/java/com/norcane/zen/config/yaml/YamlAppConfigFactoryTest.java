@@ -1,7 +1,7 @@
 package com.norcane.zen.config.yaml;
 
-import com.norcane.zen.config.AppConfig;
 import com.norcane.zen.config.exception.MissingConfigVersionException;
+import com.norcane.zen.config.model.AppConfig;
 import com.norcane.zen.meta.SemVer;
 
 import org.junit.jupiter.api.Test;

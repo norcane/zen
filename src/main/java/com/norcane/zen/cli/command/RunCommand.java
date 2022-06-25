@@ -1,7 +1,7 @@
 package com.norcane.zen.cli.command;
 
-import com.norcane.zen.config.AppConfig;
 import com.norcane.zen.config.AppConfigManager;
+import com.norcane.zen.config.model.AppConfig;
 import com.norcane.zen.ui.Console;
 
 import javax.inject.Inject;
@@ -26,7 +26,7 @@ public class RunCommand extends SubCommand {
 
     @Override
     public void execute() {
-        final AppConfig appConfig = appConfigManager.userConfig();
+        final AppConfig appConfig = appConfigManager.finalConfig();
         System.out.println(appConfig);
     }
 }

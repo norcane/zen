@@ -1,5 +1,6 @@
 package com.norcane.zen.config;
 
+import com.norcane.zen.config.model.AppConfig;
 import com.norcane.zen.meta.SemVer;
 
 import java.io.Reader;
