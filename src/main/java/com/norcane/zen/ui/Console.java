@@ -11,28 +11,28 @@ public class Console {
         print("");
     }
 
-    public void error(PrettyPrintable printable) {
+    public void error(final PrettyPrintable printable) {
         error(printable.toPretty());
     }
 
-    public void error(String text) {
+    public void error(final String text) {
         message("ERROR", text, "red");
     }
 
-    public void message(String heading, String text, String bgColor) {
+    public void message(final String heading, final String text, final String bgColor) {
         print("@|bold,bg(%s),white [X] %s:|@".formatted(bgColor, heading));
         print(text);
     }
 
-    public void print(PrettyPrintable printable) {
+    public void print(final PrettyPrintable printable) {
         print(printable.toPretty());
     }
 
-    public void print(String text) {
+    public void print(final String text) {
         System.out.println(ansiString(text));
     }
 
-    private String ansiString(String text) {
+    private String ansiString(final String text) {
         return CommandLine.Help.Ansi.AUTO.string(text);
     }
 }

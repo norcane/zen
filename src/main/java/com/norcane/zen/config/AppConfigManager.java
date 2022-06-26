@@ -42,13 +42,13 @@ public class AppConfigManager {
     private AppConfig finalConfig;
 
     @Inject
-    public AppConfigManager(Instance<AppConfigFactory> factories,
-                            Console console,
-                            Validator validator) {
+    public AppConfigManager(final Instance<AppConfigFactory> factories,
+                            final Console console,
+                            final Validator validator) {
 
-        this.factories = factories;
-        this.console = console;
-        this.validator = validator;
+        this.factories = Objects.requireNonNull(factories);
+        this.console = Objects.requireNonNull(console);
+        this.validator = Objects.requireNonNull(validator);
     }
 
     public AppConfig defaultConfig() {
@@ -125,7 +125,7 @@ public class AppConfigManager {
         return finalConfig;
     }
 
-    protected String userConfigPath(String extension) {
+    protected String userConfigPath(final String extension) {
         final String currentWorkingDir = System.getProperty("user.dir");
 
         return currentWorkingDir + File.separator + CONFIG_FILE_NAME + "." + extension;
