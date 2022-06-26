@@ -2,14 +2,21 @@ package com.norcane.zen.io;
 
 import java.util.Objects;
 
-public class StringResource implements Resource {
+public final class StringResource implements Resource {
 
+    public static final String PREFIX = "inline:";
     private static final String PATH = "<inline>";
 
-    private final String content;
+    private final String string;
 
-    public StringResource(final String content) {
-        this.content = Objects.requireNonNull(content);
+    private StringResource(final String string) {
+        this.string = string;
+    }
+
+    public static StringResource of(final String string) {
+        Objects.requireNonNull(string);
+        return new StringResource(string.startsWith(PREFIX) ? string.substring(PREFIX.length()) : string);
+
     }
 
     @Override
@@ -24,6 +31,6 @@ public class StringResource implements Resource {
 
     @Override
     public String readAsString() {
-        return this.content;
+        return this.string;
     }
 }

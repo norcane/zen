@@ -28,13 +28,12 @@ public class YamlAppConfigFactoryTest {
 
     @Test
     public void testMinCompatibleVersion() {
-        final String sourceName = "<string_source>";
-        final Resource yamlValidVersion = new StringResource(
+        final Resource yamlValidVersion = StringResource.of(
             """
                 min-compatible-version: 0.1.0
                 foo: bar
                 """);
-        final Resource yamlMissingVersion = new StringResource(
+        final Resource yamlMissingVersion = StringResource.of(
             """
                 foo: bar
                 """);
@@ -46,7 +45,7 @@ public class YamlAppConfigFactoryTest {
 
     @Test
     public void testParse() {
-        final Resource yaml = new StringResource(
+        final Resource yaml = StringResource.of(
             """
                 min-compatible-version: 0.1.0
                 foo: "bar"

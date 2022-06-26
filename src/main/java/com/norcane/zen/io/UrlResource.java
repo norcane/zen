@@ -7,17 +7,25 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
-public class UrlResource implements Resource {
+public final class UrlResource implements Resource {
+
+    public static final String HTTP_PREFIX = "http:";
+    public static final String HTTPS_PREFIX = "https:";
 
     private final URL url;
     private final String path;
 
-    public UrlResource(final URL url) {
+    private UrlResource(final URL url) {
         this.url = url;
         this.path = url.toString();
     }
 
+    public static UrlResource of(final URL url) {
+        Objects.requireNonNull(url);
+        return new UrlResource(url);
+    }
 
     @Override
     public boolean exists() {

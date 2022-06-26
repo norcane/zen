@@ -7,12 +7,19 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
-public class ClassPathResource implements Resource {
+public final class ClassPathResource implements Resource {
+
+    public static final String PREFIX = "classpath:";
 
     private final String path;
 
-    public ClassPathResource(final String path) {
-        this.path = Objects.requireNonNull(path);
+    private ClassPathResource(final String path) {
+        this.path = path;
+    }
+
+    public static ClassPathResource of(final String path) {
+        Objects.requireNonNull(path);
+        return new ClassPathResource(path.startsWith(PREFIX) ? path.substring(PREFIX.length()) : path);
     }
 
     @Override
@@ -34,5 +41,10 @@ public class ClassPathResource implements Resource {
         } catch (IOException e) {
             throw new ResourceIOException(getPath(), e);
         }
+    }
+
+    @Override
+    public String toString() {
+        return PREFIX + this.path;
     }
 }

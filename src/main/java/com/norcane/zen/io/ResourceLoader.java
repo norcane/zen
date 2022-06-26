@@ -12,27 +12,22 @@ import javax.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class ResourceLoader {
 
-    public static final String CLASSPATH_PREFIX = "classpath:";
-    public static final String HTTP_PREFIX = "http:";
-    public static final String HTTPS_PREFIX = "https:";
-    public static final String INLINE_PREFIX = "inline:";
-
     public Resource getResource(final String path) {
         Objects.requireNonNull(path, "path must not be null");
 
-        if (path.startsWith(CLASSPATH_PREFIX)) {
+        if (path.startsWith(ClassPathResource.PREFIX)) {
             // handle as classpath resource
-            return new ClassPathResource(path.substring(CLASSPATH_PREFIX.length()));
-        } else if (path.startsWith(HTTP_PREFIX) || path.startsWith(HTTPS_PREFIX)) {
+            return ClassPathResource.of(path);
+        } else if (path.startsWith(UrlResource.HTTP_PREFIX) || path.startsWith(UrlResource.HTTPS_PREFIX)) {
             // handle as remote URL resource
             try {
-                return new UrlResource(new URL(path));
+                return UrlResource.of(new URL(path));
             } catch (MalformedURLException e) {
                 throw new ResourceIOException(path, e);
             }
-        } else if (path.startsWith(INLINE_PREFIX)) {
+        } else if (path.startsWith(StringResource.PREFIX)) {
             // handle as inlined string-based resource
-            return new StringResource(path.substring(INLINE_PREFIX.length()));
+            return StringResource.of(path);
         } else {
             // by default, consider path as file system resource
             return new FileSystemResource(Paths.get(path));

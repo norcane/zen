@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class ClassPathResourceTest {
 
     private final String path = "/classpath-resource.txt";
-    private final Resource resource = new ClassPathResource(path);
+    private final Resource resource = ClassPathResource.of(path);
 
     @Test
     public void testExists() {
