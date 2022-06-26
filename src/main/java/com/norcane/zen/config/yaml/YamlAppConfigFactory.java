@@ -11,11 +11,10 @@ import com.norcane.zen.config.model.AppConfig;
 import com.norcane.zen.config.yaml.mapper.YamlAppConfigMapper;
 import com.norcane.zen.config.yaml.model.VersionWrapper;
 import com.norcane.zen.config.yaml.model.YamlAppConfig;
+import com.norcane.zen.io.Resource;
 import com.norcane.zen.meta.SemVer;
 
 import org.jboss.logging.Logger;
-
-import java.io.Reader;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -40,31 +39,31 @@ public class YamlAppConfigFactory implements AppConfigFactory {
     }
 
     @Override
-    public SemVer minCompatibleVersion(Reader source, String sourceName) {
+    public SemVer minCompatibleVersion(Resource resource) {
         final VersionWrapper wrapper;
         try {
-            wrapper = objectMapper().readValue(source, VersionWrapper.class);
+            wrapper = objectMapper().readValue(resource.readAsString(), VersionWrapper.class);
         } catch (Throwable t) {
             t.printStackTrace();
-            throw new ConfigParseException(sourceName, t);
+            throw new ConfigParseException(resource.getPath(), t);
         }
 
         if (wrapper.minCompatibleVersion() == null) {
-            throw new MissingConfigVersionException(sourceName);
+            throw new MissingConfigVersionException(resource.getPath());
         }
 
         return wrapper.minCompatibleVersion();
     }
 
     @Override
-    public AppConfig parse(Reader source, String sourceName) {
-        logger.debug("Parsing YAML configuration from %s".formatted(sourceName));
+    public AppConfig parse(Resource resource) {
+        logger.debug("Parsing YAML configuration from %s".formatted(resource.getPath()));
 
         try {
             final ObjectMapper objectMapper = objectMapper();
-            return mapper.map(objectMapper.readValue(source, YamlAppConfig.class));
+            return mapper.map(objectMapper.readValue(resource.readAsString(), YamlAppConfig.class));
         } catch (Throwable t) {
-            throw new ConfigParseException(sourceName, t);
+            throw new ConfigParseException(resource.getPath(), t);
         }
     }
 

@@ -2,12 +2,11 @@ package com.norcane.zen.config.yaml;
 
 import com.norcane.zen.config.exception.MissingConfigVersionException;
 import com.norcane.zen.config.model.AppConfig;
+import com.norcane.zen.io.Resource;
+import com.norcane.zen.io.StringResource;
 import com.norcane.zen.meta.SemVer;
 
 import org.junit.jupiter.api.Test;
-
-import java.io.Reader;
-import java.io.StringReader;
 
 import javax.inject.Inject;
 
@@ -30,30 +29,30 @@ public class YamlAppConfigFactoryTest {
     @Test
     public void testMinCompatibleVersion() {
         final String sourceName = "<string_source>";
-        final Reader yamlValidVersion = new StringReader(
+        final Resource yamlValidVersion = new StringResource(
             """
                 min-compatible-version: 0.1.0
                 foo: bar
                 """);
-        final Reader yamlMissingVersion = new StringReader(
+        final Resource yamlMissingVersion = new StringResource(
             """
                 foo: bar
                 """);
 
-        assertEquals(SemVer.from("0.1.0"), factory.minCompatibleVersion(yamlValidVersion, sourceName));
-        assertThrows(MissingConfigVersionException.class, () -> factory.minCompatibleVersion(yamlMissingVersion, sourceName));
+        assertEquals(SemVer.from("0.1.0"), factory.minCompatibleVersion(yamlValidVersion));
+        assertThrows(MissingConfigVersionException.class, () -> factory.minCompatibleVersion(yamlMissingVersion));
 
     }
 
     @Test
     public void testParse() {
-        final Reader yaml = new StringReader(
+        final Resource yaml = new StringResource(
             """
                 min-compatible-version: 0.1.0
                 foo: "bar"
                 """);
 
-        final AppConfig appConfig = factory.parse(yaml, null);
+        final AppConfig appConfig = factory.parse(yaml);
 
         assertEquals(SemVer.from("0.1.0"), appConfig.minCompatibleVersion());
 

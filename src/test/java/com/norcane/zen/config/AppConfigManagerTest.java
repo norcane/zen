@@ -2,12 +2,15 @@ package com.norcane.zen.config;
 
 import com.norcane.zen.config.exception.NoConfigFileFoundException;
 import com.norcane.zen.config.model.AppConfig;
+import com.norcane.zen.io.ResourceLoader;
 import com.norcane.zen.meta.SemVer;
 
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Paths;
 import java.util.Objects;
+
+import javax.inject.Inject;
 
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.mockito.InjectSpy;
@@ -20,6 +23,9 @@ import static org.mockito.Mockito.when;
 
 @QuarkusTest
 public class AppConfigManagerTest {
+
+    @Inject
+    ResourceLoader resourceLoader;
 
     @InjectSpy
     AppConfigManager appConfigManager;
