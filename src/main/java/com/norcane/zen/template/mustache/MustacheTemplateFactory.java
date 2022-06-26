@@ -3,10 +3,11 @@ package com.norcane.zen.template.mustache;
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
+import com.norcane.zen.io.Resource;
 import com.norcane.zen.template.Template;
 import com.norcane.zen.template.TemplateFactory;
 
-import java.io.Reader;
+import java.io.StringReader;
 import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -24,9 +25,9 @@ public class MustacheTemplateFactory implements TemplateFactory {
     }
 
     @Override
-    public Template compile(String name, Reader reader) {
-        final Mustache compiled = mustacheFactory.compile(reader, name);
+    public Template compile(Resource resource) {
+        final Mustache compiled = mustacheFactory.compile(new StringReader(resource.readAsString()), resource.getPath());
 
-        return new MustacheTemplate(name, compiled);
+        return new MustacheTemplate(resource.getPath(), compiled);
     }
 }

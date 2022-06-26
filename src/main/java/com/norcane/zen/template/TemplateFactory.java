@@ -1,11 +1,12 @@
 package com.norcane.zen.template;
 
-import java.io.Reader;
+import com.norcane.zen.io.Resource;
+
 import java.util.List;
 
 public interface TemplateFactory {
 
     List<String> fileExtensions();
 
-    Template compile(String name, Reader reader);
+    Template compile(Resource resource);
 }
