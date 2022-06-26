@@ -3,9 +3,8 @@ package com.norcane.zen.io;
 import com.norcane.zen.io.exception.ResourceIOException;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 public class ClassPathResource implements Resource {
@@ -29,8 +28,10 @@ public class ClassPathResource implements Resource {
     @Override
     public String readAsString() {
         try {
-            return Files.readString(Paths.get(Objects.requireNonNull(this.getClass().getResource(this.path)).toURI()));
-        } catch (IOException | URISyntaxException e) {
+            try (final InputStream stream = getClass().getResourceAsStream(this.path)) {
+                return new String(Objects.requireNonNull(stream).readAllBytes(), StandardCharsets.UTF_8);
+            }
+        } catch (IOException e) {
             throw new ResourceIOException(getPath(), e);
         }
     }
