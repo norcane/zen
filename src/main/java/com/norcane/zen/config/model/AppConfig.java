@@ -8,10 +8,10 @@ import javax.validation.constraints.NotNull;
 /**
  * Represents application configuration.
  */
-public record AppConfig(@NotNull SemVer minCompatibleVersion) implements Mergeable<AppConfig> {
+public record AppConfig(@NotNull SemVer baseVersion) implements Mergeable<AppConfig> {
 
     @Override
     public AppConfig merge(AppConfig other) {
-        return new AppConfig(other.minCompatibleVersion() != null ? other.minCompatibleVersion : this.minCompatibleVersion());
+        return new AppConfig(other.baseVersion() != null ? other.baseVersion() : this.baseVersion());
     }
 }

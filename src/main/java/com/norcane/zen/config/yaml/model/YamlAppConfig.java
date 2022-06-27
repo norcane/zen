@@ -7,6 +7,6 @@ import io.quarkus.runtime.annotations.RegisterForReflection;
 
 @RegisterForReflection
 public record YamlAppConfig(
-    @JsonProperty("min-compatible-version") SemVer minCompatibleVersion
+    @JsonProperty("base-version") SemVer baseVersion
 ) {
 }

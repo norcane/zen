@@ -17,15 +17,15 @@ public interface AppConfigFactory {
     String fileExtension();
 
     /**
-     * Returns minimum version of this application that is compatible with given configuration. This is needed to check whether to be loaded configuration is
-     * compatible and can be loaded without any issues.
+     * Returns base version (minimum of this application that is compatible with given configuration). This is needed to check whether to be loaded
+     * configuration is compatible and can be loaded without any issues.
      *
      * @param resource configuration source
-     * @return minimum compatibility version
+     * @return base version
      * @throws com.norcane.zen.config.exception.MissingConfigVersionException configuration version not found in source
      * @throws com.norcane.zen.config.exception.ConfigParseException error parsing configuration source
      */
-    SemVer minCompatibleVersion(Resource resource);
+    SemVer baseVersion(Resource resource);
 
     /**
      * Parses application configuration from given source.

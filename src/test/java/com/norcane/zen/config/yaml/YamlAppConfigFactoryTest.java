@@ -27,10 +27,10 @@ public class YamlAppConfigFactoryTest {
     }
 
     @Test
-    public void testMinCompatibleVersion() {
+    public void testBaseVersion() {
         final Resource yamlValidVersion = StringResource.of(
             """
-                min-compatible-version: 0.1.0
+                base-version: 0.1.0
                 foo: bar
                 """);
         final Resource yamlMissingVersion = StringResource.of(
@@ -38,8 +38,8 @@ public class YamlAppConfigFactoryTest {
                 foo: bar
                 """);
 
-        assertEquals(SemVer.from("0.1.0"), factory.minCompatibleVersion(yamlValidVersion));
-        assertThrows(MissingConfigVersionException.class, () -> factory.minCompatibleVersion(yamlMissingVersion));
+        assertEquals(SemVer.from("0.1.0"), factory.baseVersion(yamlValidVersion));
+        assertThrows(MissingConfigVersionException.class, () -> factory.baseVersion(yamlMissingVersion));
 
     }
 
@@ -47,13 +47,13 @@ public class YamlAppConfigFactoryTest {
     public void testParse() {
         final Resource yaml = StringResource.of(
             """
-                min-compatible-version: 0.1.0
+                base-version: 0.1.0
                 foo: "bar"
                 """);
 
         final AppConfig appConfig = factory.parse(yaml);
 
-        assertEquals(SemVer.from("0.1.0"), appConfig.minCompatibleVersion());
+        assertEquals(SemVer.from("0.1.0"), appConfig.baseVersion());
 
     }
 }

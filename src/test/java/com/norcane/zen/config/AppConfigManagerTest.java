@@ -35,7 +35,7 @@ public class AppConfigManagerTest {
         final AppConfig config = appConfigManager.defaultConfig();
 
         assertNotNull(config);
-        assertEquals(SemVer.from("0.1.0"), config.minCompatibleVersion());
+        assertEquals(SemVer.from("0.1.0"), config.baseVersion());
     }
 
     @Test
@@ -54,6 +54,6 @@ public class AppConfigManagerTest {
         // test loading of existing configuration
         final AppConfig userConfig = appConfigManager.userConfig();
         assertNotNull(userConfig);
-        assertEquals(SemVer.from("0.1.0"), userConfig.minCompatibleVersion());
+        assertEquals(SemVer.from("0.1.0"), userConfig.baseVersion());
     }
 }

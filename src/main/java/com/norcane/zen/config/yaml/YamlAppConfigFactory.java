@@ -39,7 +39,7 @@ public class YamlAppConfigFactory implements AppConfigFactory {
     }
 
     @Override
-    public SemVer minCompatibleVersion(Resource resource) {
+    public SemVer baseVersion(Resource resource) {
         final VersionWrapper wrapper;
         try {
             wrapper = objectMapper().readValue(resource.readAsString(), VersionWrapper.class);
@@ -48,11 +48,11 @@ public class YamlAppConfigFactory implements AppConfigFactory {
             throw new ConfigParseException(resource.getPath(), t);
         }
 
-        if (wrapper.minCompatibleVersion() == null) {
+        if (wrapper.baseVersion() == null) {
             throw new MissingConfigVersionException(resource.getPath());
         }
 
-        return wrapper.minCompatibleVersion();
+        return wrapper.baseVersion();
     }
 
     @Override
