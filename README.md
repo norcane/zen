@@ -16,6 +16,7 @@
 <div align="center">
 
 [![Supported JVM Versions](https://img.shields.io/badge/Java-17-brightgreen.svg?style=for-the-badge&logo=Java)](https://github.com/norcane/zen/)
+[![GitHub Actions Status](<https://img.shields.io/github/workflow/status/norcane/zen/Zen CI?logo=GitHub&style=for-the-badge>)](https://github.com/norcane/zen/actions/workflows/ci.yml)
 [![Commits](https://img.shields.io/github/commit-activity/m/norcane/zen.svg?label=commits&style=for-the-badge)](https://github.com/norcane/zen/pulse)
 [![License](https://img.shields.io/github/license/norcane/zen?style=for-the-badge)](https://opensource.org/licenses/BSD-3-Clause)
 
