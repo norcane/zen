@@ -27,7 +27,7 @@ public class MustacheTemplateTest {
             "info", new UserInfo(42)
         );
 
-        assertEquals(resource.getPath(), template.getName());
+        assertEquals(resource.getLocation(), template.getName());
         assertEquals(expected, template.render(new StringWriter(), variables).toString());
     }
 

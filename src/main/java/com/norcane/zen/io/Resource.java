@@ -4,7 +4,7 @@ public interface Resource {
 
     boolean exists();
 
-    String getPath();
+    String getLocation();
 
     String readAsString();
 }

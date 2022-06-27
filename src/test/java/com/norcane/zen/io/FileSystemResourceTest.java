@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class FileSystemResourceTest {
 
     private static final String content = "Hello, there!";
-    private static String path;
+    private static String location;
     private static Resource resource;
 
     @BeforeAll
@@ -23,7 +23,7 @@ public class FileSystemResourceTest {
         final Path tempFile = Files.createTempFile(null, null);
         Files.writeString(tempFile, content);
 
-        path = tempFile.toAbsolutePath().toString();
+        location = tempFile.toAbsolutePath().toString();
         resource = new FileSystemResource(tempFile);
     }
 
@@ -33,8 +33,8 @@ public class FileSystemResourceTest {
     }
 
     @Test
-    public void testGetPath() {
-        assertEquals(path, resource.getPath());
+    public void testGetLocation() {
+        assertEquals(location, resource.getLocation());
     }
 
     @Test

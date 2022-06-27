@@ -25,7 +25,7 @@ public final class StringResource implements Resource {
     }
 
     @Override
-    public String getPath() {
+    public String getLocation() {
         return PATH;
     }
 

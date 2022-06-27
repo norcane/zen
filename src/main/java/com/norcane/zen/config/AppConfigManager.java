@@ -98,7 +98,7 @@ public class AppConfigManager {
             // TODO config compatibility check
 
             userConfig = factory.parse(resource);
-            console.print("Loaded user configuration file: " + resource.getPath());
+            console.print("Loaded user configuration file: " + resource.getLocation());
         }
 
         return userConfig;

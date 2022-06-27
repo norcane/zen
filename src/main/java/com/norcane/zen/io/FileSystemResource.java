@@ -9,28 +9,28 @@ import java.util.Objects;
 
 public class FileSystemResource implements Resource {
 
-    private final Path path;
+    private final Path location;
 
-    public FileSystemResource(final Path path) {
-        this.path = Objects.requireNonNull(path);
+    public FileSystemResource(final Path location) {
+        this.location = Objects.requireNonNull(location);
     }
 
     @Override
     public boolean exists() {
-        return Files.exists(this.path);
+        return Files.exists(this.location);
     }
 
     @Override
-    public String getPath() {
-        return this.path.toString();
+    public String getLocation() {
+        return this.location.toString();
     }
 
     @Override
     public String readAsString() {
         try {
-            return Files.readString(this.path);
+            return Files.readString(this.location);
         } catch (IOException e) {
-            throw new ResourceIOException(this.path.toString(), e);
+            throw new ResourceIOException(this.location.toString(), e);
         }
     }
 }

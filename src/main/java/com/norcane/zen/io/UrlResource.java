@@ -15,11 +15,11 @@ public final class UrlResource implements Resource {
     public static final String HTTPS_PREFIX = "https:";
 
     private final URL url;
-    private final String path;
+    private final String location;
 
     private UrlResource(final URL url) {
         this.url = url;
-        this.path = url.toString();
+        this.location = url.toString();
     }
 
     public static UrlResource of(final URL url) {
@@ -34,13 +34,13 @@ public final class UrlResource implements Resource {
             return HttpURLConnection.HTTP_OK == connection.getResponseCode();
 
         } catch (IOException e) {
-            throw new ResourceIOException(this.path, e);
+            throw new ResourceIOException(this.location, e);
         }
     }
 
     @Override
-    public String getPath() {
-        return this.path;
+    public String getLocation() {
+        return this.location;
     }
 
     @Override
@@ -48,7 +48,7 @@ public final class UrlResource implements Resource {
         try (final InputStream stream = this.url.openStream()) {
             return new String(stream.readAllBytes(), StandardCharsets.UTF_8);
         } catch (IOException e) {
-            throw new ResourceIOException(this.path, e);
+            throw new ResourceIOException(this.location, e);
         }
     }
 }

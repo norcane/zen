@@ -11,40 +11,40 @@ public final class ClassPathResource implements Resource {
 
     public static final String PREFIX = "classpath:";
 
-    private final String path;
+    private final String location;
 
-    private ClassPathResource(final String path) {
-        this.path = path;
+    private ClassPathResource(final String location) {
+        this.location = location;
     }
 
-    public static ClassPathResource of(final String path) {
-        Objects.requireNonNull(path);
-        return new ClassPathResource(path.startsWith(PREFIX) ? path.substring(PREFIX.length()) : path);
+    public static ClassPathResource of(final String location) {
+        Objects.requireNonNull(location);
+        return new ClassPathResource(location.startsWith(PREFIX) ? location.substring(PREFIX.length()) : location);
     }
 
     @Override
     public boolean exists() {
-        return this.getClass().getResource(this.path) != null;
+        return this.getClass().getResource(this.location) != null;
     }
 
     @Override
-    public String getPath() {
-        return this.path;
+    public String getLocation() {
+        return this.location;
     }
 
     @Override
     public String readAsString() {
         try {
-            try (final InputStream stream = getClass().getResourceAsStream(this.path)) {
+            try (final InputStream stream = getClass().getResourceAsStream(this.location)) {
                 return new String(Objects.requireNonNull(stream).readAllBytes(), StandardCharsets.UTF_8);
             }
         } catch (IOException e) {
-            throw new ResourceIOException(getPath(), e);
+            throw new ResourceIOException(getLocation(), e);
         }
     }
 
     @Override
     public String toString() {
-        return PREFIX + this.path;
+        return PREFIX + this.location;
     }
 }

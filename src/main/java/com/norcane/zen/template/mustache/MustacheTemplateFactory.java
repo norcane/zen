@@ -26,8 +26,8 @@ public class MustacheTemplateFactory implements TemplateFactory {
 
     @Override
     public Template compile(Resource resource) {
-        final Mustache compiled = mustacheFactory.compile(new StringReader(resource.readAsString()), resource.getPath());
+        final Mustache compiled = mustacheFactory.compile(new StringReader(resource.readAsString()), resource.getLocation());
 
-        return new MustacheTemplate(resource.getPath(), compiled);
+        return new MustacheTemplate(resource.getLocation(), compiled);
     }
 }

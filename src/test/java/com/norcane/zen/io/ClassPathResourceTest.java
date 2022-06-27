@@ -10,8 +10,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @QuarkusTest
 public class ClassPathResourceTest {
 
-    private final String path = "/classpath-resource.txt";
-    private final Resource resource = ClassPathResource.of(path);
+    private final String location = "/classpath-resource.txt";
+    private final Resource resource = ClassPathResource.of(location);
 
     @Test
     public void testExists() {
@@ -19,8 +19,8 @@ public class ClassPathResourceTest {
     }
 
     @Test
-    public void testGetPath() {
-        assertEquals(path, resource.getPath());
+    public void testGetLocation() {
+        assertEquals(location, resource.getLocation());
     }
 
     @Test
