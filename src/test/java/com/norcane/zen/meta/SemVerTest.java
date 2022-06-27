@@ -2,9 +2,12 @@ package com.norcane.zen.meta;
 
 import org.junit.jupiter.api.Test;
 
+import io.quarkus.test.junit.QuarkusTest;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@QuarkusTest
 public class SemVerTest {
 
     @Test

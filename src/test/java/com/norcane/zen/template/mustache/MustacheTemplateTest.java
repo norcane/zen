@@ -10,8 +10,11 @@ import org.junit.jupiter.api.Test;
 import java.io.StringWriter;
 import java.util.Map;
 
+import io.quarkus.test.junit.QuarkusTest;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@QuarkusTest
 public class MustacheTemplateTest {
 
     private final TemplateFactory templateFactory = new MustacheTemplateFactory();
