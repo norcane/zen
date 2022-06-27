@@ -6,7 +6,7 @@ quarkus:
       "io.quarkus":
         level: warn
       "com.norcane.zen":
-        level: "off"
+        level: ${ZEN_LOG_LEVEL:off}
   native:
     resources:
       includes:
