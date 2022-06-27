@@ -15,10 +15,10 @@
 
 <div align="center">
 
-[![Supported JVM Versions](https://img.shields.io/badge/Java-17-brightgreen.svg?style=for-the-badge&logo=Java)](https://github.com/norcane/zen/)
+[![Supported JVM Versions](https://img.shields.io/badge/Java-17-brightgreen.svg?style=for-the-badge&logo=OpenJDK)](https://github.com/norcane/zen/)
 [![GitHub Actions Status](<https://img.shields.io/github/workflow/status/norcane/zen/Zen CI?logo=GitHub&style=for-the-badge>)](https://github.com/norcane/zen/actions/workflows/ci.yml)
 [![Codecov](https://img.shields.io/codecov/c/github/norcane/zen?style=for-the-badge&logo=Codecov)](https://codecov.io/gh/norcane/zen)
-[![Commits](https://img.shields.io/github/commit-activity/m/norcane/zen.svg?label=commits&style=for-the-badge)](https://github.com/norcane/zen/pulse)
+[![Commits](https://img.shields.io/github/commit-activity/m/norcane/zen.svg?label=commits&style=for-the-badge&logo=Git)](https://github.com/norcane/zen/pulse)
 [![License](https://img.shields.io/github/license/norcane/zen?style=for-the-badge)](https://opensource.org/licenses/BSD-3-Clause)
 
 </div>
