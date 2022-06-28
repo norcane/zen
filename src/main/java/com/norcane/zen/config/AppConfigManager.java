@@ -5,9 +5,9 @@ import com.norcane.zen.config.exception.InvalidConfigurationException;
 import com.norcane.zen.config.exception.MultipleConfigFilesFoundException;
 import com.norcane.zen.config.exception.NoConfigFileFoundException;
 import com.norcane.zen.config.model.AppConfig;
-import com.norcane.zen.io.Resource;
-import com.norcane.zen.io.ResourceLoader;
 import com.norcane.zen.meta.ProductInfo;
+import com.norcane.zen.resource.Resource;
+import com.norcane.zen.resource.ResourceLoader;
 import com.norcane.zen.ui.Console;
 
 import org.jboss.logging.Logger;

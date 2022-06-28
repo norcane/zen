@@ -1,8 +1,8 @@
 package com.norcane.zen.config;
 
 import com.norcane.zen.config.model.AppConfig;
-import com.norcane.zen.io.Resource;
 import com.norcane.zen.meta.SemVer;
+import com.norcane.zen.resource.Resource;
 
 /**
  * Factory class for loading application configuration from given source format (e.g. {@code YAML} files).

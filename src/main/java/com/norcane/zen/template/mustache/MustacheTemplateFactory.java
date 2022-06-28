@@ -3,7 +3,7 @@ package com.norcane.zen.template.mustache;
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
-import com.norcane.zen.io.Resource;
+import com.norcane.zen.resource.Resource;
 import com.norcane.zen.template.Template;
 import com.norcane.zen.template.TemplateFactory;
 

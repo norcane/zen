@@ -1,18 +1,23 @@
-package com.norcane.zen.io;
+package com.norcane.zen.resource.filesystem;
+
+
+import com.norcane.zen.resource.Resource;
+import com.norcane.zen.resource.exception.CannotReadResourceException;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import io.quarkus.test.junit.QuarkusTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @QuarkusTest
-public class FileSystemResourceTest {
+class FileSystemResourceTest {
 
     private static final String content = "Hello, there!";
     private static String location;
@@ -24,21 +29,17 @@ public class FileSystemResourceTest {
         Files.writeString(tempFile, content);
 
         location = tempFile.toAbsolutePath().toString();
-        resource = new FileSystemResource(tempFile);
+        resource = FileSystemResource.of(tempFile);
     }
 
     @Test
-    public void testExists() {
-        assertTrue(resource.exists());
-    }
-
-    @Test
-    public void testGetLocation() {
+    void getLocation() {
         assertEquals(location, resource.getLocation());
     }
 
     @Test
-    public void testReadAsString() {
+    void readAsString() {
         assertEquals(content, resource.readAsString());
+        assertThrows(CannotReadResourceException.class, () -> FileSystemResource.of(Paths.get("/not/existing")).readAsString());
     }
 }

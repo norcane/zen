@@ -11,8 +11,8 @@ import com.norcane.zen.config.model.AppConfig;
 import com.norcane.zen.config.yaml.mapper.YamlAppConfigMapper;
 import com.norcane.zen.config.yaml.model.VersionWrapper;
 import com.norcane.zen.config.yaml.model.YamlAppConfig;
-import com.norcane.zen.io.Resource;
 import com.norcane.zen.meta.SemVer;
+import com.norcane.zen.resource.Resource;
 
 import org.jboss.logging.Logger;
 

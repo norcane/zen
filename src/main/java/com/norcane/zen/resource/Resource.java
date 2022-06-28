@@ -1,8 +1,6 @@
-package com.norcane.zen.io;
+package com.norcane.zen.resource;
 
 public interface Resource {
-
-    boolean exists();
 
     String getLocation();
 

@@ -2,9 +2,9 @@ package com.norcane.zen.config.yaml;
 
 import com.norcane.zen.config.exception.MissingConfigVersionException;
 import com.norcane.zen.config.model.AppConfig;
-import com.norcane.zen.io.Resource;
-import com.norcane.zen.io.StringResource;
 import com.norcane.zen.meta.SemVer;
+import com.norcane.zen.resource.Resource;
+import com.norcane.zen.resource.inline.InlineResource;
 
 import org.junit.jupiter.api.Test;
 
@@ -28,12 +28,12 @@ public class YamlAppConfigFactoryTest {
 
     @Test
     public void testBaseVersion() {
-        final Resource yamlValidVersion = StringResource.of(
+        final Resource yamlValidVersion = InlineResource.of(
             """
                 base-version: 0.1.0
                 foo: bar
                 """);
-        final Resource yamlMissingVersion = StringResource.of(
+        final Resource yamlMissingVersion = InlineResource.of(
             """
                 foo: bar
                 """);
@@ -45,7 +45,7 @@ public class YamlAppConfigFactoryTest {
 
     @Test
     public void testParse() {
-        final Resource yaml = StringResource.of(
+        final Resource yaml = InlineResource.of(
             """
                 base-version: 0.1.0
                 foo: "bar"

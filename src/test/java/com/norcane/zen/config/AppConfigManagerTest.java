@@ -2,8 +2,8 @@ package com.norcane.zen.config;
 
 import com.norcane.zen.config.exception.NoConfigFileFoundException;
 import com.norcane.zen.config.model.AppConfig;
-import com.norcane.zen.io.ResourceLoader;
 import com.norcane.zen.meta.SemVer;
+import com.norcane.zen.resource.ResourceLoader;
 
 import org.junit.jupiter.api.Test;
 

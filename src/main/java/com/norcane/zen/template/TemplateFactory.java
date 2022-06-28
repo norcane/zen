@@ -1,6 +1,7 @@
 package com.norcane.zen.template;
 
-import com.norcane.zen.io.Resource;
+
+import com.norcane.zen.resource.Resource;
 
 import java.util.List;
 
