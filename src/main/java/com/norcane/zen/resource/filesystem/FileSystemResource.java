@@ -33,4 +33,9 @@ public class FileSystemResource implements Resource {
             throw new CannotReadResourceException(this, e);
         }
     }
+
+    @Override
+    public String toString() {
+        return "%s[%s]".formatted(getClass().getSimpleName(), location);
+    }
 }

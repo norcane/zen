@@ -24,20 +24,16 @@ public class ResourceLoader {
     }
 
     public Resource getResource(final String location) {
-        final ResourceFactory selectedFactory = factories
-            .stream()
-            .filter(factory -> factory.getPrefixes().stream().anyMatch(location::startsWith))
-            .findAny().orElse(defaultFactory);
-
-        return selectedFactory.getResource(removePrefixes(location, selectedFactory.getPrefixes()));
+        final ResourceFactory factory = findFactory(location);
+        return factory.getResource(removePrefixes(location, factory.getPrefixes()));
     }
 
     public List<Resource> getResources(final String location) {
-        // FIXME implement
-        throw new UnsupportedOperationException("not implemented yet");
+        final ResourceFactory factory = findFactory(location);
+        return factory.getResources(removePrefixes(location, factory.getPrefixes()));
     }
 
-    protected String removePrefixes(String location, List<String> possiblePrefixes) {
+    protected String removePrefixes(final String location, final List<String> possiblePrefixes) {
         return possiblePrefixes
             .stream()
             .map(prefix -> prefix + PREFIX_SEPARATOR)
@@ -45,5 +41,12 @@ public class ResourceLoader {
             .findAny()
             .map(s -> location.substring(s.length()))
             .orElse(location);
+    }
+
+    private ResourceFactory findFactory(final String location) {
+        return factories
+            .stream()
+            .filter(factory -> factory.getPrefixes().stream().anyMatch(location::startsWith))
+            .findAny().orElse(defaultFactory);
     }
 }
