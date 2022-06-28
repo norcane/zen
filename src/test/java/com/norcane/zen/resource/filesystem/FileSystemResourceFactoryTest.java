@@ -62,13 +62,13 @@ class FileSystemResourceFactoryTest {
 
         final String root = tempDirectory.toString();
 
-        final List<Resource> paths1 = factory.findResources(root, "**/*.txt");
-        assertEquals(2, paths1.size());
-        assertTrue(paths1.get(0).getLocation().endsWith("a.txt"));
-        assertTrue(paths1.get(1).getLocation().endsWith("b.txt"));
+        final List<Resource> resources1 = factory.findResources(root, "**/*.txt");
+        assertEquals(2, resources1.size());
+        assertTrue(resources1.stream().anyMatch(resource -> resource.getLocation().endsWith("a.txt")));
+        assertTrue(resources1.stream().anyMatch(resource -> resource.getLocation().endsWith("b.txt")));
 
-        final List<Resource> paths2 = factory.findResources(root, "**/a.txt");
-        assertEquals(1, paths2.size());
-        assertTrue(paths2.get(0).getLocation().endsWith("a.txt"));
+        final List<Resource> resources2 = factory.findResources(root, "**/a.txt");
+        assertEquals(1, resources2.size());
+        assertTrue(resources1.stream().anyMatch(resource -> resource.getLocation().endsWith("a.txt")));
     }
 }
