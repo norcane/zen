@@ -53,7 +53,14 @@ class FileSystemResourceFactoryTest {
 
     @Test
     public void findResources() throws Exception {
-        final String root = Paths.get(getClass().getResource("/resources-test").toURI()).toString();
+        final Path tempDirectory = Files.createTempDirectory(null);
+        final Path fileA = Paths.get("a.txt");
+        final Path fileB = Paths.get("foo/b.txt");
+        Files.createDirectories(tempDirectory.resolve(fileB.getParent()));
+        Files.createFile(tempDirectory.resolve(fileA));
+        Files.createFile(tempDirectory.resolve(fileB));
+
+        final String root = tempDirectory.toString();
 
         final List<Resource> paths1 = factory.findResources(root, "**/*.txt");
         assertEquals(2, paths1.size());
