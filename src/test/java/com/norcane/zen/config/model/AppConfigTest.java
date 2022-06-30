@@ -4,6 +4,8 @@ import com.norcane.zen.meta.SemVer;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import io.quarkus.test.junit.QuarkusTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -13,8 +15,14 @@ class AppConfigTest {
 
     @Test
     void merge() {
-        final AppConfig appConfig1 = AppConfigBuilder.builder().baseVersion(SemVer.from("0.1.0")).build();
-        final AppConfig appConfig2 = AppConfigBuilder.builder().baseVersion(SemVer.from("0.2.0")).build();
+        final AppConfig appConfig1 = AppConfigBuilder.builder()
+            .baseVersion(SemVer.from("0.1.0"))
+            .templateMappings(List.of()).
+            build();
+        final AppConfig appConfig2 = AppConfigBuilder.builder()
+            .baseVersion(SemVer.from("0.2.0"))
+            .templateMappings(List.of())
+            .build();
 
         final AppConfig merged = appConfig1.merge(appConfig2);
 
