@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -54,8 +53,8 @@ class FileSystemResourceFactoryTest {
     @Test
     public void findResources() throws Exception {
         final Path tempDirectory = Files.createTempDirectory(null);
-        final Path fileA = Paths.get("a.txt");
-        final Path fileB = Paths.get("foo/b.txt");
+        final Path fileA = Path.of("a.txt");
+        final Path fileB = Path.of("foo/b.txt");
         Files.createDirectories(tempDirectory.resolve(fileB.getParent()));
         Files.createFile(tempDirectory.resolve(fileA));
         Files.createFile(tempDirectory.resolve(fileB));

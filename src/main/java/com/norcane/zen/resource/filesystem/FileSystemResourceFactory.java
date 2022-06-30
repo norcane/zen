@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -38,7 +37,7 @@ public class FileSystemResourceFactory implements ResourceFactory {
 
     @Override
     public Resource getResource(final String location) {
-        final Path path = Paths.get(location);
+        final Path path = Path.of(location);
         if (!Files.isReadable(path)) {
             throw new ResourceNotFoundException(location);
         }
@@ -53,7 +52,7 @@ public class FileSystemResourceFactory implements ResourceFactory {
     }
 
     protected List<Resource> findResources(final String rootDir, final String pattern) {
-        try (final Stream<Path> stream = Files.walk(Paths.get(rootDir))) {
+        try (final Stream<Path> stream = Files.walk(Path.of(rootDir))) {
             return stream
                 .filter(path -> pathMatcher.matches(pattern, path))
                 .map(FileSystemResource::of)

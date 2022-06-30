@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import io.quarkus.test.junit.QuarkusTest;
 
@@ -40,6 +39,6 @@ class FileSystemResourceTest {
     @Test
     void readAsString() {
         assertEquals(content, resource.readAsString());
-        assertThrows(CannotReadResourceException.class, () -> FileSystemResource.of(Paths.get("/not/existing")).readAsString());
+        assertThrows(CannotReadResourceException.class, () -> FileSystemResource.of(Path.of("/not/existing")).readAsString());
     }
 }

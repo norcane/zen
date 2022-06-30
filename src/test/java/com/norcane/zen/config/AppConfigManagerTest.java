@@ -7,7 +7,7 @@ import com.norcane.zen.resource.ResourceLoader;
 
 import org.junit.jupiter.api.Test;
 
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.Objects;
 
 import javax.inject.Inject;
@@ -46,7 +46,7 @@ public class AppConfigManagerTest {
         // mocks
         when(appConfigManager.userConfigPath(any())).thenReturn(
             nonExistingConfigPath,
-            Paths.get(Objects.requireNonNull(getClass().getResource(defaultConfigPath)).toURI()).toAbsolutePath().toString());
+            Path.of(Objects.requireNonNull(getClass().getResource(defaultConfigPath)).toURI()).toAbsolutePath().toString());
 
         // test case when no configuration is present
         assertThrows(NoConfigFileFoundException.class, appConfigManager::userConfig);
