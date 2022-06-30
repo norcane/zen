@@ -25,7 +25,7 @@ public class ResourceLoader {
 
     public Resource getResource(final String location) {
         final ResourceFactory factory = findFactory(location);
-        return factory.getResource(removePrefixes(location, factory.getPrefixes()));
+        return findFactory(location).getResource(removePrefixes(location, factory.getPrefixes()));
     }
 
     public List<Resource> getResources(final String location) {

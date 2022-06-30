@@ -41,4 +41,9 @@ class FileSystemResourceTest {
         assertEquals(content, resource.readAsString());
         assertThrows(CannotReadResourceException.class, () -> FileSystemResource.of(Path.of("/not/existing")).readAsString());
     }
+
+    @Test
+    void testToString() {
+        assertEquals("FileSystemResource[%s]".formatted(location), resource.toString());
+    }
 }

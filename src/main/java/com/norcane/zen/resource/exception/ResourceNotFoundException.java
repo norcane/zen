@@ -15,6 +15,11 @@ public class ResourceNotFoundException extends ZenRuntimeException {
         this.location = Objects.requireNonNull(location);
     }
 
+    public ResourceNotFoundException(String location, Throwable cause) {
+        super(location, cause);
+        this.location = Objects.requireNonNull(location);
+    }
+
     @Override
     protected String problem() {
         return "Resource not found: %s".formatted(location);
