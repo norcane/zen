@@ -13,8 +13,8 @@ class AppConfigTest {
 
     @Test
     void merge() {
-        final AppConfig appConfig1 = new AppConfig(SemVer.from("0.2.0"));
-        final AppConfig appConfig2 = new AppConfig(SemVer.from("0.2.0"));
+        final AppConfig appConfig1 = AppConfigBuilder.builder().baseVersion(SemVer.from("0.1.0")).build();
+        final AppConfig appConfig2 = AppConfigBuilder.builder().baseVersion(SemVer.from("0.2.0")).build();
 
         final AppConfig merged = appConfig1.merge(appConfig2);
 

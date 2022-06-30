@@ -5,10 +5,15 @@ import com.norcane.zen.meta.SemVer;
 
 import javax.validation.constraints.NotNull;
 
+import io.soabase.recordbuilder.core.RecordBuilder;
+
 /**
  * Represents application configuration.
  */
-public record AppConfig(@NotNull SemVer baseVersion) implements Mergeable<AppConfig> {
+@RecordBuilder()
+@RecordBuilder.Options(addClassRetainedGenerated = true, inheritComponentAnnotations = false)
+public record AppConfig(@NotNull SemVer baseVersion)
+    implements Mergeable<AppConfig>, AppConfigBuilder.With {
 
     @Override
     public AppConfig merge(AppConfig other) {

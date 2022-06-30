@@ -1,8 +1,6 @@
 quarkus:
   banner:
     enabled: false
-  jacoco:
-    title: zen test coverage report
   log:
     category:
       "io.quarkus":
@@ -13,3 +11,8 @@ quarkus:
     resources:
       includes:
         - config/**
+
+"%test":
+  quarkus:
+    jacoco:
+      title: zen test coverage report

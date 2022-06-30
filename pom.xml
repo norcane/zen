@@ -22,6 +22,7 @@
         <mapstruct.version>1.5.2.Final</mapstruct.version>
         <mustache.java.version>0.9.10</mustache.java.version>
         <jackson.version>2.13.3</jackson.version>
+        <record.builder.version>33</record.builder.version>
     </properties>
 
     <dependencyManagement>
@@ -76,6 +77,12 @@
             <artifactId>jackson-dataformat-yaml</artifactId>
             <version>${jackson.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.soabase.record-builder</groupId>
+            <artifactId>record-builder-processor</artifactId>
+            <version>${record.builder.version}</version>
+            <scope>provided</scope>
+        </dependency>
 
         <!-- TEST DEPENDENCIES -->
         <dependency>
@@ -116,6 +123,11 @@
                             <groupId>org.mapstruct</groupId>
                             <artifactId>mapstruct-processor</artifactId>
                             <version>${mapstruct.version}</version>
+                        </path>
+                        <path>
+                            <groupId>io.soabase.record-builder</groupId>
+                            <artifactId>record-builder-processor</artifactId>
+                            <version>${record.builder.version}</version>
                         </path>
                         <!-- other annotation processors -->
                     </annotationProcessorPaths>
