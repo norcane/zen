@@ -44,7 +44,6 @@ public class YamlAppConfigFactory implements AppConfigFactory {
         try {
             wrapper = objectMapper().readValue(resource.readAsString(), VersionWrapper.class);
         } catch (Throwable t) {
-            t.printStackTrace();
             throw new ConfigParseException(resource.getLocation(), t);
         }
 

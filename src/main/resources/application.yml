@@ -1,6 +1,8 @@
 quarkus:
   banner:
     enabled: false
+  jacoco:
+    title: zen test coverage report
   log:
     category:
       "io.quarkus":
