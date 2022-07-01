@@ -4,11 +4,13 @@ import com.norcane.zen.data.Mergeable;
 import com.norcane.zen.meta.SemVer;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 import javax.validation.constraints.NotNull;
 
 import io.soabase.recordbuilder.core.RecordBuilder;
+
+import static com.norcane.zen.data.MergeStrategies.concatLists;
+import static com.norcane.zen.data.MergeStrategies.latter;
 
 /**
  * Represents application configuration.
@@ -21,7 +23,7 @@ public record AppConfig(@NotNull SemVer baseVersion,
 
     @Override
     public AppConfig merge(AppConfig other) {
-        return new AppConfig(other.baseVersion() != null ? other.baseVersion() : this.baseVersion(),
-                             Stream.concat(this.templateMappings.stream(), other.templateMappings().stream()).toList());
+        return new AppConfig(latter(this.baseVersion(), other.baseVersion()),
+                             concatLists(this.templateMappings(), other.templateMappings()));
     }
 }
