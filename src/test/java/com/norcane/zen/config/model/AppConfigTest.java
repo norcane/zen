@@ -17,11 +17,13 @@ class AppConfigTest {
     void merge() {
         final AppConfig appConfig1 = AppConfigBuilder.builder()
             .baseVersion(SemVer.from("0.1.0"))
-            .templateMappings(List.of()).
-            build();
+            .templates(List.of())
+            .sources(List.of())
+            .build();
         final AppConfig appConfig2 = AppConfigBuilder.builder()
             .baseVersion(SemVer.from("0.2.0"))
-            .templateMappings(List.of())
+            .templates(List.of())
+            .sources(List.of())
             .build();
 
         final AppConfig merged = appConfig1.merge(appConfig2);
