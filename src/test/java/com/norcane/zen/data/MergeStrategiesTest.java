@@ -1,23 +1,20 @@
 package com.norcane.zen.data;
 
-import com.norcane.zen.test.UnitTestBase;
-
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import io.quarkus.test.junit.QuarkusTest;
 
+import static com.norcane.zen.test.Assertions.assertNonInstantiable;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @QuarkusTest
-class MergeStrategiesTest extends UnitTestBase {
+class MergeStrategiesTest {
 
     @Test
     void testNonInstantiable() {
-        assertThrows(InvocationTargetException.class, () -> coverageSingleton(MergeStrategies.class));
+        assertNonInstantiable(MergeStrategies.class);
     }
 
     @Test
