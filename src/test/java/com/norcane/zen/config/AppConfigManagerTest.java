@@ -1,5 +1,6 @@
 package com.norcane.zen.config;
 
+import com.norcane.zen.config.exception.InvalidConfigurationException;
 import com.norcane.zen.config.exception.NoConfigFileFoundException;
 import com.norcane.zen.config.model.AppConfig;
 import com.norcane.zen.meta.SemVer;
@@ -7,6 +8,7 @@ import com.norcane.zen.resource.ResourceLoader;
 
 import org.junit.jupiter.api.Test;
 
+import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.util.Objects;
 
@@ -31,7 +33,7 @@ public class AppConfigManagerTest {
     AppConfigManager appConfigManager;
 
     @Test
-    public void testDefaultConfig() {
+    void defaultConfig() {
         final AppConfig config = appConfigManager.defaultConfig();
 
         assertNotNull(config);
@@ -39,14 +41,12 @@ public class AppConfigManagerTest {
     }
 
     @Test
-    public void testUserConfig() throws Exception {
+    void userConfig() throws Exception {
         final String nonExistingConfigPath = "/foo/bar.yaml";
-        final String defaultConfigPath = "/config/default-config.yaml";
+        final String validConfigPath = "/config/valid-config.yaml";
 
         // mocks
-        when(appConfigManager.userConfigPath(any())).thenReturn(
-            nonExistingConfigPath,
-            Path.of(Objects.requireNonNull(getClass().getResource(defaultConfigPath)).toURI()).toAbsolutePath().toString());
+        when(appConfigManager.userConfigPath(any())).thenReturn(nonExistingConfigPath, absolutePath(validConfigPath));
 
         // test case when no configuration is present
         assertThrows(NoConfigFileFoundException.class, appConfigManager::userConfig);
@@ -55,5 +55,29 @@ public class AppConfigManagerTest {
         final AppConfig userConfig = appConfigManager.userConfig();
         assertNotNull(userConfig);
         assertEquals(SemVer.from("0.1.0"), userConfig.baseVersion());
+    }
+
+    @Test
+    void finalConfig() throws Exception {
+        final String validConfigPath = "/config/valid-config.yaml";
+        final String invalidConfigPath = "/config/invalid-config.yaml";
+
+        // mocks
+        when(appConfigManager.userConfigPath(any())).thenReturn(
+            absolutePath(validConfigPath),
+            absolutePath(validConfigPath),
+            absolutePath(invalidConfigPath));
+
+        // valid configuration loaded
+        appConfigManager.clearCaches();
+        assertNotNull(appConfigManager.finalConfig());
+
+        // invalid configuration loaded
+        appConfigManager.clearCaches();
+        assertThrows(InvalidConfigurationException.class, () -> appConfigManager.finalConfig());
+    }
+
+    private String absolutePath(String classPathResource) throws URISyntaxException {
+        return Path.of(Objects.requireNonNull(getClass().getResource(classPathResource)).toURI()).toAbsolutePath().toString();
     }
 }

@@ -1,0 +1,4 @@
+base-version: 0.1.0
+
+templates: [ templates/ ]
+sources: [ src/ ]

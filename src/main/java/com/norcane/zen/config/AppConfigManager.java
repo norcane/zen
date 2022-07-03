@@ -10,8 +10,6 @@ import com.norcane.zen.resource.Resource;
 import com.norcane.zen.resource.ResourceLoader;
 import com.norcane.zen.ui.Console;
 
-import org.jboss.logging.Logger;
-
 import java.io.File;
 import java.util.List;
 import java.util.Objects;
@@ -25,8 +23,6 @@ import javax.validation.Validator;
 
 @ApplicationScoped
 public class AppConfigManager {
-
-    private static final Logger logger = Logger.getLogger(AppConfigManager.class);
 
     private static final String DEFAULT_CONFIG_PATH = "classpath:/config/default-config.yaml";
     private static final String CONFIG_FILE_NAME = ProductInfo.NAME;
@@ -110,7 +106,6 @@ public class AppConfigManager {
             final AppConfig userConfig = userConfig();
             final AppConfig mergedConfig = defaultConfig.merge(userConfig);
 
-            // FIXME validate config
             final Set<ConstraintViolation<AppConfig>> violations = validator.validate(mergedConfig);
             if (!violations.isEmpty()) {
                 throw new InvalidConfigurationException(violations);
@@ -126,5 +121,11 @@ public class AppConfigManager {
         final String currentWorkingDir = System.getProperty("user.dir");
 
         return currentWorkingDir + File.separator + CONFIG_FILE_NAME + "." + extension;
+    }
+
+    protected void clearCaches() {
+        this.defaultConfig = null;
+        this.userConfig = null;
+        this.finalConfig = null;
     }
 }

@@ -15,7 +15,7 @@ public class InvalidConfigurationException extends ZenRuntimeException {
     private final Set<ConstraintViolation<AppConfig>> violations;
 
     public InvalidConfigurationException(Set<ConstraintViolation<AppConfig>> violations) {
-
+        super(violations.toString());
         this.violations = violations;
     }
 
