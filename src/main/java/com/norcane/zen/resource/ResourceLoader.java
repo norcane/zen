@@ -1,5 +1,8 @@
 package com.norcane.zen.resource;
 
+import com.norcane.zen.base.Predicates;
+import com.norcane.zen.resource.exception.ResourceNotFoundException;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -23,14 +26,16 @@ public class ResourceLoader {
         this.defaultFactory = Objects.requireNonNull(defaultFactory);
     }
 
-    public Resource getResource(final String location) {
+    public Resource resource(final String location) {
         final ResourceFactory factory = findFactory(location);
-        return findFactory(location).getResource(removePrefixes(location, factory.getPrefixes()));
+        return factory
+            .resource(removePrefixes(location, factory.prefixes()))
+            .orElseThrow(() -> new ResourceNotFoundException(location));
     }
 
-    public List<Resource> getResources(final String location) {
-        final ResourceFactory factory = findFactory(location);
-        return factory.getResources(removePrefixes(location, factory.getPrefixes()));
+    public List<Resource> resources(final String locationPattern) {
+        final ResourceFactory factory = findFactory(locationPattern);
+        return factory.resources(removePrefixes(locationPattern, factory.prefixes()), Predicates.alwaysTrue());
     }
 
     protected String removePrefixes(final String location, final List<String> possiblePrefixes) {
@@ -46,7 +51,7 @@ public class ResourceLoader {
     private ResourceFactory findFactory(final String location) {
         return factories
             .stream()
-            .filter(factory -> factory.getPrefixes().stream().anyMatch(location::startsWith))
+            .filter(factory -> factory.prefixes().stream().anyMatch(location::startsWith))
             .findAny().orElse(defaultFactory);
     }
 }

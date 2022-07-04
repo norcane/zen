@@ -1,9 +1,11 @@
 package com.norcane.zen.resource.classpath;
 
+import com.norcane.zen.base.Predicates;
 import com.norcane.zen.resource.Resource;
-import com.norcane.zen.resource.exception.ResourceNotFoundException;
 
 import org.junit.jupiter.api.Test;
+
+import java.util.Optional;
 
 import javax.inject.Inject;
 
@@ -12,6 +14,7 @@ import io.quarkus.test.junit.QuarkusTest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @QuarkusTest
 class ClassPathResourceFactoryTest {
@@ -20,22 +23,23 @@ class ClassPathResourceFactoryTest {
     ClassPathResourceFactory factory;
 
     @Test
-    void getPrefixes() {
-        assertNotNull(factory.getPrefixes());
+    void prefixes() {
+        assertNotNull(factory.prefixes());
     }
 
     @Test
-    void getResource() {
+    void resource() {
         final String location = "/classpath-resource.txt";
 
-        final Resource resource = factory.getResource(location);
-        assertEquals(location, resource.getLocation());
+        final Optional<Resource> resource = factory.resource(location);
+        assertTrue(resource.isPresent());
+        assertEquals(location, resource.get().location());
 
-        assertThrows(ResourceNotFoundException.class, () -> factory.getResource("foobar"));
+        assertTrue(factory.resource("foobar").isEmpty());
     }
 
     @Test
-    void getResources() {
-        assertThrows(UnsupportedOperationException.class, () -> factory.getResources("foo"));
+    void resources() {
+        assertThrows(UnsupportedOperationException.class, () -> factory.resources("foo", Predicates.alwaysTrue()));
     }
 }

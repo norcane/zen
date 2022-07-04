@@ -18,7 +18,7 @@ public class CannotReadResourceException extends ZenRuntimeException {
 
     @Override
     protected String problem() {
-        return "Cannot read resource %s".formatted(resource.getLocation());
+        return "Cannot read resource %s".formatted(resource.location());
     }
 
     @Override

@@ -2,9 +2,10 @@ package com.norcane.zen.resource.classpath;
 
 import com.norcane.zen.resource.Resource;
 import com.norcane.zen.resource.ResourceFactory;
-import com.norcane.zen.resource.exception.ResourceNotFoundException;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Predicate;
 
 import javax.enterprise.context.ApplicationScoped;
 
@@ -14,21 +15,19 @@ public class ClassPathResourceFactory implements ResourceFactory {
     private static final List<String> PREFIXES = List.of("classpath");
 
     @Override
-    public List<String> getPrefixes() {
+    public List<String> prefixes() {
         return PREFIXES;
     }
 
     @Override
-    public Resource getResource(final String location) {
-        if (getClass().getResource(location) == null) {
-            throw new ResourceNotFoundException(location);
-        }
-
-        return ClassPathResource.of(location);
+    public Optional<Resource> resource(final String location) {
+        return Optional
+            .ofNullable(getClass().getResource(location))
+            .map(url -> ClassPathResource.of(location));
     }
 
     @Override
-    public List<Resource> getResources(final String location) {
+    public List<Resource> resources(final String locationPattern, final Predicate<Resource> filter) {
         throw new UnsupportedOperationException();
     }
 }

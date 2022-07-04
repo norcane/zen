@@ -16,8 +16,8 @@ class InlineResourceTest {
     private static final Resource resource = InlineResource.of(content);
 
     @Test
-    void getLocation() {
-        assertNotNull(resource.getLocation());
+    void location() {
+        assertNotNull(resource.location());
     }
 
     @Test

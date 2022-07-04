@@ -18,8 +18,8 @@ class ClassPathResourceTest {
     private static final Resource resource = ClassPathResource.of(location);
 
     @Test
-    void getLocation() {
-        assertEquals(location, resource.getLocation());
+    void location() {
+        assertEquals(location, resource.location());
     }
 
     @Test

@@ -30,7 +30,7 @@ public class MustacheTemplateTest {
             "info", new UserInfo(42)
         );
 
-        assertEquals(resource.getLocation(), template.getName());
+        assertEquals(resource.location(), template.getName());
         assertEquals(expected, template.render(new StringWriter(), variables).toString());
     }
 

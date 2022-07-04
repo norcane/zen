@@ -19,7 +19,7 @@ public class InlineResource implements Resource {
     }
 
     @Override
-    public String getLocation() {
+    public String location() {
         return LOCATION;
     }
 

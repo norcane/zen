@@ -12,6 +12,8 @@ import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -31,28 +33,24 @@ public class FileSystemResourceFactory implements ResourceFactory {
     }
 
     @Override
-    public List<String> getPrefixes() {
+    public List<String> prefixes() {
         return PREFIXES;
     }
 
     @Override
-    public Resource getResource(final String location) {
+    public Optional<Resource> resource(final String location) {
         final Path path = Path.of(location);
-        if (!Files.isReadable(path)) {
-            throw new ResourceNotFoundException(location);
-        }
-
-        return FileSystemResource.of(path);
+        return Files.isReadable(path) ? Optional.of(FileSystemResource.of(path)) : Optional.empty();
     }
 
     @Override
-    public List<Resource> getResources(final String location) {
-        if (!pathMatcher.isPattern(location)) {
-            final Path path = Path.of(location);
+    public List<Resource> resources(final String locationPattern, Predicate<Resource> filter) {
+        if (!pathMatcher.isPattern(locationPattern)) {
+            final Path path = Path.of(locationPattern);
 
             if (Files.isDirectory(path)) {
                 // if path is directory, find all files inside the directory
-                return findResources(path.resolve("*").toString());
+                return findResources(path.resolve("*").toString(), filter);
             } else if (Files.isReadable(path)) {
                 // if it's path to file, return the file itself
                 return List.of(FileSystemResource.of(path));
@@ -63,17 +61,17 @@ public class FileSystemResourceFactory implements ResourceFactory {
         }
 
         // find resources for given pattern
-        return findResources(location);
+        return findResources(locationPattern, filter);
     }
 
-    protected List<Resource> findResources(String location) {
+    protected List<Resource> findResources(String location, Predicate<Resource> filter) {
         final String rootDir = resolveRootDir(location);
         final String pattern = location.substring(rootDir.length());
 
-        return findResources(rootDir, pattern);
+        return findResources(rootDir, pattern, filter);
     }
 
-    protected List<Resource> findResources(final String rootDir, final String pattern) {
+    protected List<Resource> findResources(final String rootDir, final String pattern, final Predicate<Resource> filter) {
         final Path rootPath = Path.of(rootDir);
 
         try (final Stream<Path> stream = Files.walk(rootPath)) {
@@ -82,6 +80,7 @@ public class FileSystemResourceFactory implements ResourceFactory {
                 .filter(path -> pathMatcher.matches(pattern, Path.of(rootDir).relativize(path)))
                 .map(FileSystemResource::of)
                 .map(Resource.class::cast)
+                .filter(filter)
                 .toList();
         } catch (IOException e) {
             throw new ResourceNotFoundException(pattern, e);

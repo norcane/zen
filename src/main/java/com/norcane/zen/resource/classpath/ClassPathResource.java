@@ -20,7 +20,7 @@ public class ClassPathResource implements Resource {
     }
 
     @Override
-    public String getLocation() {
+    public String location() {
         return location;
     }
 

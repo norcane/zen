@@ -32,8 +32,8 @@ class FileSystemResourceTest {
     }
 
     @Test
-    void getLocation() {
-        assertEquals(location, resource.getLocation());
+    void location() {
+        assertEquals(location, resource.location());
     }
 
     @Test

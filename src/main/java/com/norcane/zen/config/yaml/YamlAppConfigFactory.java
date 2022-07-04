@@ -44,11 +44,11 @@ public class YamlAppConfigFactory implements AppConfigFactory {
         try {
             wrapper = objectMapper().readValue(resource.readAsString(), VersionWrapper.class);
         } catch (Throwable t) {
-            throw new ConfigParseException(resource.getLocation(), t);
+            throw new ConfigParseException(resource.location(), t);
         }
 
         if (wrapper.baseVersion() == null) {
-            throw new MissingConfigVersionException(resource.getLocation());
+            throw new MissingConfigVersionException(resource.location());
         }
 
         return wrapper.baseVersion();
@@ -56,13 +56,13 @@ public class YamlAppConfigFactory implements AppConfigFactory {
 
     @Override
     public AppConfig parse(Resource resource) {
-        logger.debug("Parsing YAML configuration from %s".formatted(resource.getLocation()));
+        logger.debug("Parsing YAML configuration from %s".formatted(resource.location()));
 
         try {
             final ObjectMapper objectMapper = objectMapper();
             return mapper.map(objectMapper.readValue(resource.readAsString(), YamlAppConfig.class));
         } catch (Throwable t) {
-            throw new ConfigParseException(resource.getLocation(), t);
+            throw new ConfigParseException(resource.location(), t);
         }
     }
 

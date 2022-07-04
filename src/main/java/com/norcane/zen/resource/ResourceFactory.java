@@ -1,12 +1,14 @@
 package com.norcane.zen.resource;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Predicate;
 
 public interface ResourceFactory {
 
-    List<String> getPrefixes();
+    List<String> prefixes();
 
-    Resource getResource(String location);
+    Optional<Resource> resource(String location);
 
-    List<Resource> getResources(String location);
+    List<Resource> resources(String locationPattern, Predicate<Resource> filter);
 }

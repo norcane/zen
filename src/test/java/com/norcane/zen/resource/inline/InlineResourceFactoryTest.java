@@ -1,6 +1,11 @@
 package com.norcane.zen.resource.inline;
 
+import com.norcane.zen.base.Predicates;
+import com.norcane.zen.resource.Resource;
+
 import org.junit.jupiter.api.Test;
+
+import java.util.Optional;
 
 import javax.inject.Inject;
 
@@ -9,6 +14,7 @@ import io.quarkus.test.junit.QuarkusTest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @QuarkusTest
 class InlineResourceFactoryTest {
@@ -17,19 +23,21 @@ class InlineResourceFactoryTest {
     InlineResourceFactory factory;
 
     @Test
-    void getPrefixes() {
-        assertNotNull(factory.getPrefixes());
+    void prefixes() {
+        assertNotNull(factory.prefixes());
     }
 
     @Test
-    void getResource() {
+    void resource() {
         final String content = "Hello, there!";
 
-        assertEquals(content, factory.getResource(content).readAsString());
+        final Optional<Resource> resource = factory.resource(content);
+        assertTrue(resource.isPresent());
+        assertEquals(content, resource.get().readAsString());
     }
 
     @Test
-    void getResources() {
-        assertThrows(UnsupportedOperationException.class, () -> factory.getResources("foobar"));
+    void resources() {
+        assertThrows(UnsupportedOperationException.class, () -> factory.resources("foobar", Predicates.alwaysTrue()));
     }
 }

@@ -51,7 +51,7 @@ public class AppConfigManager {
     public AppConfig defaultConfig() {
         if (defaultConfig == null) {
             final String defaultConfigExtension = DEFAULT_CONFIG_PATH.substring(DEFAULT_CONFIG_PATH.lastIndexOf(".") + 1);
-            final Resource resource = resourceLoader.getResource(DEFAULT_CONFIG_PATH);
+            final Resource resource = resourceLoader.resource(DEFAULT_CONFIG_PATH);
 
             defaultConfig = factories
                 .stream()
@@ -89,12 +89,12 @@ public class AppConfigManager {
             }
 
             final AppConfigFactory factory = availableFactories.get(0);
-            final Resource resource = resourceLoader.getResource(userConfigPath(factory.fileExtension()));
+            final Resource resource = resourceLoader.resource(userConfigPath(factory.fileExtension()));
 
             // TODO config compatibility check
 
             userConfig = factory.parse(resource);
-            console.print("Loaded user configuration file: " + resource.getLocation());
+            console.print("Loaded user configuration file: " + resource.location());
         }
 
         return userConfig;

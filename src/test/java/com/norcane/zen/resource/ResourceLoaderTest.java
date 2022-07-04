@@ -20,14 +20,14 @@ class ResourceLoaderTest {
     ResourceLoader resourceLoader;
 
     @Test
-    void getResource() {
-        final Resource resource = resourceLoader.getResource("classpath:/classpath-resource.txt");
+    void resource() {
+        final Resource resource = resourceLoader.resource("classpath:/classpath-resource.txt");
 
-        assertEquals("/classpath-resource.txt", resource.getLocation());
+        assertEquals("/classpath-resource.txt", resource.location());
     }
 
     @Test
-    void getResources() throws Exception {
+    void resources() throws Exception {
         final Path tempDirectory = Files.createTempDirectory(null);
         final Path fileA = Path.of("a.txt");
         final Path fileB = Path.of("foo/b.txt");
@@ -35,9 +35,9 @@ class ResourceLoaderTest {
         Files.createFile(tempDirectory.resolve(fileA));
         Files.createFile(tempDirectory.resolve(fileB));
 
-        final List<Resource> resources = resourceLoader.getResources(tempDirectory.toString());
+        final List<Resource> resources = resourceLoader.resources(tempDirectory.toString());
         assertEquals(1, resources.size());
-        assertTrue(resources.stream().anyMatch(resource -> resource.getLocation().endsWith("a.txt")));
+        assertTrue(resources.stream().anyMatch(resource -> resource.location().endsWith("a.txt")));
 
     }
 
