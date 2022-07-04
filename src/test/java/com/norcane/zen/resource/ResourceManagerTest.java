@@ -14,14 +14,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @QuarkusTest
-class ResourceLoaderTest {
+class ResourceManagerTest {
 
     @Inject
-    ResourceLoader resourceLoader;
+    ResourceManager resourceManager;
 
     @Test
     void resource() {
-        final Resource resource = resourceLoader.resource("classpath:/classpath-resource.txt");
+        final Resource resource = resourceManager.resource("classpath:/classpath-resource.txt");
 
         assertEquals("/classpath-resource.txt", resource.location());
     }
@@ -35,7 +35,7 @@ class ResourceLoaderTest {
         Files.createFile(tempDirectory.resolve(fileA));
         Files.createFile(tempDirectory.resolve(fileB));
 
-        final List<Resource> resources = resourceLoader.resources(tempDirectory.toString());
+        final List<Resource> resources = resourceManager.resources(tempDirectory.toString());
         assertEquals(1, resources.size());
         assertTrue(resources.stream().anyMatch(resource -> resource.location().endsWith("a.txt")));
 
@@ -44,6 +44,6 @@ class ResourceLoaderTest {
     @Test
     void removePrefixes() {
         final List<String> prefixes = List.of("classpath");
-        assertEquals("/foo/bar", resourceLoader.removePrefixes("classpath:/foo/bar", prefixes));
+        assertEquals("/foo/bar", resourceManager.removePrefixes("classpath:/foo/bar", prefixes));
     }
 }

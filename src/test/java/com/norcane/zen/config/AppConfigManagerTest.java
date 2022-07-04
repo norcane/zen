@@ -4,7 +4,7 @@ import com.norcane.zen.config.exception.InvalidConfigurationException;
 import com.norcane.zen.config.exception.NoConfigFileFoundException;
 import com.norcane.zen.config.model.AppConfig;
 import com.norcane.zen.meta.SemVer;
-import com.norcane.zen.resource.ResourceLoader;
+import com.norcane.zen.resource.ResourceManager;
 
 import org.junit.jupiter.api.Test;
 
@@ -27,7 +27,7 @@ import static org.mockito.Mockito.when;
 public class AppConfigManagerTest {
 
     @Inject
-    ResourceLoader resourceLoader;
+    ResourceManager resourceManager;
 
     @InjectSpy
     AppConfigManager appConfigManager;

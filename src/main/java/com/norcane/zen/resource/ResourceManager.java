@@ -11,7 +11,7 @@ import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
 @ApplicationScoped
-public class ResourceLoader {
+public class ResourceManager {
 
     private static final String PREFIX_SEPARATOR = ":";
 
@@ -19,8 +19,8 @@ public class ResourceLoader {
     private final ResourceFactory defaultFactory;
 
     @Inject
-    public ResourceLoader(final Instance<ResourceFactory> factories,
-                          @DefaultResourceFactory final ResourceFactory defaultFactory) {
+    public ResourceManager(final Instance<ResourceFactory> factories,
+                           @DefaultResourceFactory final ResourceFactory defaultFactory) {
 
         this.factories = Objects.requireNonNull(factories);
         this.defaultFactory = Objects.requireNonNull(defaultFactory);

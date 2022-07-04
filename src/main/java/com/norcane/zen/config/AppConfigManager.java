@@ -7,7 +7,7 @@ import com.norcane.zen.config.exception.NoConfigFileFoundException;
 import com.norcane.zen.config.model.AppConfig;
 import com.norcane.zen.meta.ProductInfo;
 import com.norcane.zen.resource.Resource;
-import com.norcane.zen.resource.ResourceLoader;
+import com.norcane.zen.resource.ResourceManager;
 import com.norcane.zen.ui.Console;
 
 import java.io.File;
@@ -29,7 +29,7 @@ public class AppConfigManager {
 
     private final Instance<AppConfigFactory> factories;
     private final Console console;
-    private final ResourceLoader resourceLoader;
+    private final ResourceManager resourceManager;
     private final Validator validator;
 
     private AppConfig defaultConfig;
@@ -39,19 +39,19 @@ public class AppConfigManager {
     @Inject
     public AppConfigManager(final Instance<AppConfigFactory> factories,
                             final Console console,
-                            final ResourceLoader resourceLoader,
+                            final ResourceManager resourceManager,
                             final Validator validator) {
 
         this.factories = Objects.requireNonNull(factories);
         this.console = Objects.requireNonNull(console);
-        this.resourceLoader = Objects.requireNonNull(resourceLoader);
+        this.resourceManager = Objects.requireNonNull(resourceManager);
         this.validator = Objects.requireNonNull(validator);
     }
 
     public AppConfig defaultConfig() {
         if (defaultConfig == null) {
             final String defaultConfigExtension = DEFAULT_CONFIG_PATH.substring(DEFAULT_CONFIG_PATH.lastIndexOf(".") + 1);
-            final Resource resource = resourceLoader.resource(DEFAULT_CONFIG_PATH);
+            final Resource resource = resourceManager.resource(DEFAULT_CONFIG_PATH);
 
             defaultConfig = factories
                 .stream()
@@ -89,7 +89,7 @@ public class AppConfigManager {
             }
 
             final AppConfigFactory factory = availableFactories.get(0);
-            final Resource resource = resourceLoader.resource(userConfigPath(factory.fileExtension()));
+            final Resource resource = resourceManager.resource(userConfigPath(factory.fileExtension()));
 
             // TODO config compatibility check
 
