@@ -13,6 +13,7 @@ import java.util.Map;
 import io.quarkus.test.junit.QuarkusTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @QuarkusTest
 public class MustacheTemplateTest {
@@ -32,6 +33,14 @@ public class MustacheTemplateTest {
 
         assertEquals(resource.location(), template.getName());
         assertEquals(expected, template.render(new StringWriter(), variables).toString());
+    }
+
+    @Test
+    void testToString() {
+        final Resource resource = InlineResource.of("test", "mustache", "Hello {{name}}, {{info.age}} years old");
+        final Template template = templateFactory.compile(resource);
+
+        assertNotNull(template.toString());
     }
 
     private record UserInfo(int age) {

@@ -4,6 +4,7 @@ import com.norcane.zen.exception.ZenRuntimeException;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class DuplicateTemplatesFoundException extends ZenRuntimeException {
     private final String type;
@@ -17,16 +18,23 @@ public class DuplicateTemplatesFoundException extends ZenRuntimeException {
 
     @Override
     protected String problem() {
-        return null;
+        final String listOfPaths = paths.stream()
+            .map("  - @|bold s|@"::formatted)
+            .collect(Collectors.joining("\n"));
+
+        return """
+            Template paths contain multiple templates for same source file type @|bold %s|@:
+            %s
+            """.strip().formatted(type, listOfPaths);
     }
 
     @Override
     protected String solution() {
-        return null;
+        return "Make sure that only one template is present for selected file type";
     }
 
     @Override
     protected List<String> links() {
-        return null;
+        return List.of();
     }
 }

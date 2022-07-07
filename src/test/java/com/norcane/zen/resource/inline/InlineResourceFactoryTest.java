@@ -35,6 +35,8 @@ class InlineResourceFactoryTest {
         assertEquals("test", resource.get().name());
         assertEquals("txt", resource.get().type());
         assertEquals("Hello, there!", resource.get().readAsString());
+
+        assertThrows(IllegalArgumentException.class, () -> factory.resource("foo bar"));
     }
 
     @Test
