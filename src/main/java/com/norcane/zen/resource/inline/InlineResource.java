@@ -19,6 +19,16 @@ public class InlineResource implements Resource {
     }
 
     @Override
+    public String name() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public String type() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public String location() {
         return LOCATION;
     }

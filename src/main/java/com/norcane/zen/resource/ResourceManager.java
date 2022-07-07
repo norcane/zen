@@ -1,6 +1,5 @@
 package com.norcane.zen.resource;
 
-import com.norcane.zen.base.Predicates;
 import com.norcane.zen.resource.exception.ResourceNotFoundException;
 
 import java.util.List;
@@ -35,7 +34,7 @@ public class ResourceManager {
 
     public List<Resource> resources(final String locationPattern) {
         final ResourceFactory factory = findFactory(locationPattern);
-        return factory.resources(removePrefixes(locationPattern, factory.prefixes()), Predicates.alwaysTrue());
+        return factory.resources(removePrefixes(locationPattern, factory.prefixes()), resource -> true);
     }
 
     protected String removePrefixes(final String location, final List<String> possiblePrefixes) {

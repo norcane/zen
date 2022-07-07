@@ -3,11 +3,11 @@ package com.norcane.zen.template;
 
 import com.norcane.zen.resource.Resource;
 
-import java.util.List;
+import java.util.Set;
 
 public interface TemplateFactory {
 
-    List<String> fileExtensions();
+    Set<String> fileExtensions();
 
     Template compile(Resource resource);
 }

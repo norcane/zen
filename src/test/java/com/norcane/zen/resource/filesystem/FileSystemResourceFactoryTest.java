@@ -1,6 +1,5 @@
 package com.norcane.zen.resource.filesystem;
 
-import com.norcane.zen.base.Predicates;
 import com.norcane.zen.resource.DefaultResourceFactory;
 import com.norcane.zen.resource.Resource;
 import com.norcane.zen.resource.exception.ResourceNotFoundException;
@@ -61,21 +60,21 @@ class FileSystemResourceFactoryTest {
         final String pattern = tempDirectory + File.separator + "**.txt";
 
         // check if correctly resolves non-existing paths
-        assertTrue(factory.resources("/not/existing", Predicates.alwaysTrue()).isEmpty());
-        assertThrows(ResourceNotFoundException.class, () -> factory.findResources("/not/existing", "pattern", Predicates.alwaysTrue()));
+        assertTrue(factory.resources("/not/existing", resource -> true).isEmpty());
+        assertThrows(ResourceNotFoundException.class, () -> factory.findResources("/not/existing", "pattern", resource -> true));
 
         // check if correctly resolves directory path
-        final List<Resource> resources1 = factory.resources(tempDirectory.toString(), Predicates.alwaysTrue());
+        final List<Resource> resources1 = factory.resources(tempDirectory.toString(), resource -> true);
         assertEquals(1, resources1.size());
         assertTrue(resources1.stream().anyMatch(resource -> resource.location().endsWith("a.txt")));
 
         // check if correctly resolves single file path
-        final List<Resource> resources2 = factory.resources(tempDirectory.resolve(fileA).toString(), Predicates.alwaysTrue());
+        final List<Resource> resources2 = factory.resources(tempDirectory.resolve(fileA).toString(), resource -> true);
         assertEquals(1, resources2.size());
         assertTrue(resources2.stream().anyMatch(resource -> resource.location().endsWith("a.txt")));
 
         // check if correctly resolves GLOB pattern
-        final List<Resource> resources3 = factory.resources(pattern, Predicates.alwaysTrue());
+        final List<Resource> resources3 = factory.resources(pattern, resource -> true);
         assertEquals(2, resources3.size());
         assertTrue(resources3.stream().anyMatch(resource -> resource.location().endsWith("a.txt")));
         assertTrue(resources3.stream().anyMatch(resource -> resource.location().endsWith("b.txt")));
@@ -92,7 +91,7 @@ class FileSystemResourceFactoryTest {
 
         final String root = tempDirectory.toString();
 
-        final List<Resource> resources1 = factory.findResources(root, "**.txt", Predicates.alwaysTrue());
+        final List<Resource> resources1 = factory.findResources(root, "**.txt", resource -> true);
         assertEquals(2, resources1.size());
         assertTrue(resources1.stream().anyMatch(resource -> resource.location().endsWith("a.txt")));
         assertTrue(resources1.stream().anyMatch(resource -> resource.location().endsWith("b.txt")));

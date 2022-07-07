@@ -32,6 +32,16 @@ class FileSystemResourceTest {
     }
 
     @Test
+    void name() {
+        assertEquals("name", FileSystemResource.of(Path.of("/foo/bar/name.txt")).name());
+    }
+
+    @Test
+    void type() {
+        assertEquals("txt", FileSystemResource.of(Path.of("/foo/bar/name.txt")).type());
+    }
+
+    @Test
     void location() {
         assertEquals(location, resource.location());
     }

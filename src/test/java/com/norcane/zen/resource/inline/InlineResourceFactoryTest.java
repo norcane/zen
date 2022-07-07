@@ -1,6 +1,5 @@
 package com.norcane.zen.resource.inline;
 
-import com.norcane.zen.base.Predicates;
 import com.norcane.zen.resource.Resource;
 
 import org.junit.jupiter.api.Test;
@@ -38,6 +37,6 @@ class InlineResourceFactoryTest {
 
     @Test
     void resources() {
-        assertThrows(UnsupportedOperationException.class, () -> factory.resources("foobar", Predicates.alwaysTrue()));
+        assertThrows(UnsupportedOperationException.class, () -> factory.resources("foobar", resource -> true));
     }
 }

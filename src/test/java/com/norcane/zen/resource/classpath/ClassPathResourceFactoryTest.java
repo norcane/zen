@@ -1,6 +1,5 @@
 package com.norcane.zen.resource.classpath;
 
-import com.norcane.zen.base.Predicates;
 import com.norcane.zen.resource.Resource;
 
 import org.junit.jupiter.api.Test;
@@ -40,6 +39,6 @@ class ClassPathResourceFactoryTest {
 
     @Test
     void resources() {
-        assertThrows(UnsupportedOperationException.class, () -> factory.resources("foo", Predicates.alwaysTrue()));
+        assertThrows(UnsupportedOperationException.class, () -> factory.resources("foo", resource -> true));
     }
 }

@@ -11,13 +11,28 @@ import java.util.Objects;
 public class FileSystemResource implements Resource {
 
     private final Path location;
+    private final String name;
+    private final String type;
 
     private FileSystemResource(final Path location) {
         this.location = location;
+        this.name = com.google.common.io.Files.getNameWithoutExtension(location.toString());
+        this.type = com.google.common.io.Files.getFileExtension(location.toString());
+
     }
 
     public static FileSystemResource of(final Path path) {
         return new FileSystemResource(Objects.requireNonNull(path));
+    }
+
+    @Override
+    public String name() {
+        return name;
+    }
+
+    @Override
+    public String type() {
+        return type;
     }
 
     @Override

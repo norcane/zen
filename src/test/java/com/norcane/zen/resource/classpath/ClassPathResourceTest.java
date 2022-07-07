@@ -18,6 +18,16 @@ class ClassPathResourceTest {
     private static final Resource resource = ClassPathResource.of(location);
 
     @Test
+    void name() {
+        assertEquals("classpath-resource", resource.name());
+    }
+
+    @Test
+    void type() {
+        assertEquals("txt", resource.type());
+    }
+
+    @Test
     void location() {
         assertEquals(location, resource.location());
     }
