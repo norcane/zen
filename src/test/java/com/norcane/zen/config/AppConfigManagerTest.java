@@ -69,11 +69,11 @@ public class AppConfigManagerTest {
             absolutePath(invalidConfigPath));
 
         // valid configuration loaded
-        appConfigManager.clearCaches();
+        appConfigManager.resetMemoizedState();
         assertNotNull(appConfigManager.finalConfig());
 
         // invalid configuration loaded
-        appConfigManager.clearCaches();
+        appConfigManager.resetMemoizedState();
         assertThrows(InvalidConfigurationException.class, () -> appConfigManager.finalConfig());
     }
 

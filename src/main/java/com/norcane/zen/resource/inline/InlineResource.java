@@ -8,24 +8,28 @@ public class InlineResource implements Resource {
 
     private static final String LOCATION = "<inline string>";
 
+    private final String name;
+    private final String type;
     private final String content;
 
-    private InlineResource(final String content) {
+    private InlineResource(String name, String type, final String content) {
+        this.name = name;
+        this.type = type;
         this.content = content;
     }
 
-    public static InlineResource of(final String content) {
-        return new InlineResource(Objects.requireNonNull(content));
+    public static InlineResource of(final String name, final String type, final String content) {
+        return new InlineResource(Objects.requireNonNull(name), Objects.requireNonNull(type), Objects.requireNonNull(content));
     }
 
     @Override
     public String name() {
-        throw new UnsupportedOperationException();
+        return name;
     }
 
     @Override
     public String type() {
-        throw new UnsupportedOperationException();
+        return type;
     }
 
     @Override

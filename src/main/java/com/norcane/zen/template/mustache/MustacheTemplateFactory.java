@@ -8,20 +8,19 @@ import com.norcane.zen.template.Template;
 import com.norcane.zen.template.TemplateFactory;
 
 import java.io.StringReader;
-import java.util.Set;
 
 import javax.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class MustacheTemplateFactory implements TemplateFactory {
 
-    private static final Set<String> FILE_EXTENSIONS = Set.of("mustache");
+    private static final String TEMPLATE_TYPE = "mustache";
 
     private static final MustacheFactory mustacheFactory = new DefaultMustacheFactory();
 
     @Override
-    public Set<String> fileExtensions() {
-        return FILE_EXTENSIONS;
+    public String templateType() {
+        return TEMPLATE_TYPE;
     }
 
     @Override

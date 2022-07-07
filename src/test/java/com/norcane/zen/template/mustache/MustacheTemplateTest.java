@@ -22,7 +22,7 @@ public class MustacheTemplateTest {
     @Test
     public void testRender() {
         final String expected = "Hello John, 42 years old";
-        final Resource resource = InlineResource.of("Hello {{name}}, {{info.age}} years old");
+        final Resource resource = InlineResource.of("test", "mustache", "Hello {{name}}, {{info.age}} years old");
         final Template template = templateFactory.compile(resource);
 
         final Map<String, Object> variables = Map.of(

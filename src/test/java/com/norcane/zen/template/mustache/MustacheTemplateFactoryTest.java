@@ -9,7 +9,7 @@ import javax.inject.Inject;
 
 import io.quarkus.test.junit.QuarkusTest;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @QuarkusTest
@@ -19,13 +19,13 @@ class MustacheTemplateFactoryTest {
     MustacheTemplateFactory factory;
 
     @Test
-    void fileExtensions() {
-        assertFalse(factory.fileExtensions().isEmpty());
+    void templateType() {
+        assertEquals("mustache", factory.templateType());
     }
 
     @Test
     void compile() {
-        final Template template = factory.compile(InlineResource.of("Hello, {{name}}!"));
+        final Template template = factory.compile(InlineResource.of("test", "mustache", "Hello, {{name}}!"));
         assertNotNull(template);
     }
 }

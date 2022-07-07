@@ -21,7 +21,13 @@ public class InlineResourceFactory implements ResourceFactory {
 
     @Override
     public Optional<Resource> resource(final String location) {
-        return Optional.of(InlineResource.of(location));
+        final String[] chunks = location.split(":", 3);
+
+        if (chunks.length != 3) {
+            throw new IllegalArgumentException("Illegal inline resource '%s', expected format NAME:TYPE:CONTENT".formatted(location));
+        }
+
+        return Optional.of(InlineResource.of(chunks[0], chunks[1], chunks[2]));
     }
 
     @Override

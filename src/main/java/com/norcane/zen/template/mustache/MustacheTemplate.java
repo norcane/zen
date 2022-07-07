@@ -1,5 +1,7 @@
 package com.norcane.zen.template.mustache;
 
+import com.google.common.base.MoreObjects;
+
 import com.github.mustachejava.Mustache;
 import com.norcane.zen.template.Template;
 
@@ -38,6 +40,8 @@ public class MustacheTemplate implements Template {
 
     @Override
     public String toString() {
-        return String.format("MustacheTemplate { name=%s }", name);
+        return MoreObjects.toStringHelper(this)
+            .add("name", name)
+            .toString();
     }
 }

@@ -1,6 +1,7 @@
 package com.norcane.zen.config;
 
 
+import com.norcane.zen.base.Memoizable;
 import com.norcane.zen.config.exception.InvalidConfigurationException;
 import com.norcane.zen.config.exception.MultipleConfigFilesFoundException;
 import com.norcane.zen.config.exception.NoConfigFileFoundException;
@@ -22,7 +23,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
 @ApplicationScoped
-public class AppConfigManager {
+public class AppConfigManager implements Memoizable {
 
     private static final String DEFAULT_CONFIG_PATH = "classpath:/config/default-config.yaml";
     private static final String CONFIG_FILE_NAME = ProductInfo.NAME;
@@ -123,7 +124,8 @@ public class AppConfigManager {
         return currentWorkingDir + File.separator + CONFIG_FILE_NAME + "." + extension;
     }
 
-    protected void clearCaches() {
+    @Override
+    public void resetMemoizedState() {
         this.defaultConfig = null;
         this.userConfig = null;
         this.finalConfig = null;

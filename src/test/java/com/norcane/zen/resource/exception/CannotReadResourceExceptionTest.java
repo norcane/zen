@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @QuarkusTest
 class CannotReadResourceExceptionTest {
 
-    private static final Resource resource = InlineResource.of("test");
+    private static final Resource resource = InlineResource.of("test", "txt", "test");
     private static final CannotReadResourceException exception = new CannotReadResourceException(resource, null);
 
     @Test

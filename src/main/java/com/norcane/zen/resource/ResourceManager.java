@@ -4,6 +4,7 @@ import com.norcane.zen.resource.exception.ResourceNotFoundException;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Predicate;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
@@ -33,8 +34,12 @@ public class ResourceManager {
     }
 
     public List<Resource> resources(final String locationPattern) {
+        return resources(locationPattern, resource -> true);
+    }
+
+    public List<Resource> resources(final String locationPattern, final Predicate<Resource> filter) {
         final ResourceFactory factory = findFactory(locationPattern);
-        return factory.resources(removePrefixes(locationPattern, factory.prefixes()), resource -> true);
+        return factory.resources(removePrefixes(locationPattern, factory.prefixes()), filter);
     }
 
     protected String removePrefixes(final String location, final List<String> possiblePrefixes) {

@@ -29,11 +29,15 @@ public class YamlAppConfigFactoryTest {
     @Test
     public void testBaseVersion() {
         final Resource yamlValidVersion = InlineResource.of(
+            "test",
+            "yaml",
             """
                 base-version: 0.1.0
                 foo: bar
                 """);
         final Resource yamlMissingVersion = InlineResource.of(
+            "test",
+            "yaml",
             """
                 foo: bar
                 """);
@@ -46,6 +50,8 @@ public class YamlAppConfigFactoryTest {
     @Test
     public void testParse() {
         final Resource yaml = InlineResource.of(
+            "test",
+            "yaml",
             """
                 base-version: 0.1.0
                 foo: "bar"

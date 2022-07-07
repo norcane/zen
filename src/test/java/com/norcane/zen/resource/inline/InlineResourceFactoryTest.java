@@ -28,11 +28,13 @@ class InlineResourceFactoryTest {
 
     @Test
     void resource() {
-        final String content = "Hello, there!";
+        final String location = "test:txt:Hello, there!";
 
-        final Optional<Resource> resource = factory.resource(content);
+        final Optional<Resource> resource = factory.resource(location);
         assertTrue(resource.isPresent());
-        assertEquals(content, resource.get().readAsString());
+        assertEquals("test", resource.get().name());
+        assertEquals("txt", resource.get().type());
+        assertEquals("Hello, there!", resource.get().readAsString());
     }
 
     @Test
