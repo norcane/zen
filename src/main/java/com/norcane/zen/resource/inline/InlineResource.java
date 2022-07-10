@@ -2,6 +2,9 @@ package com.norcane.zen.resource.inline;
 
 import com.norcane.zen.resource.Resource;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 public class InlineResource implements Resource {
@@ -35,6 +38,11 @@ public class InlineResource implements Resource {
     @Override
     public String location() {
         return LOCATION;
+    }
+
+    @Override
+    public InputStream inputStream() {
+        return new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8));
     }
 
     @Override

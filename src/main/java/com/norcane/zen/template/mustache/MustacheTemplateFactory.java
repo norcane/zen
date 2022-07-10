@@ -1,13 +1,15 @@
 package com.norcane.zen.template.mustache;
 
 import com.github.mustachejava.DefaultMustacheFactory;
-import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
 import com.norcane.zen.resource.Resource;
 import com.norcane.zen.template.Template;
 import com.norcane.zen.template.TemplateFactory;
 
-import java.io.StringReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.UncheckedIOException;
 
 import javax.enterprise.context.ApplicationScoped;
 
@@ -25,8 +27,10 @@ public class MustacheTemplateFactory implements TemplateFactory {
 
     @Override
     public Template compile(Resource resource) {
-        final Mustache compiled = mustacheFactory.compile(new StringReader(resource.readAsString()), resource.location());
-
-        return new MustacheTemplate(resource.location(), compiled);
+        try (final Reader reader = new InputStreamReader(resource.inputStream())) {
+            return new MustacheTemplate(resource.location(), mustacheFactory.compile(reader, resource.location()));
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 }

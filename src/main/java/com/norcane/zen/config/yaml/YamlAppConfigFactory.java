@@ -16,6 +16,8 @@ import com.norcane.zen.resource.Resource;
 
 import org.jboss.logging.Logger;
 
+import java.io.InputStream;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
@@ -41,8 +43,8 @@ public class YamlAppConfigFactory implements AppConfigFactory {
     @Override
     public SemVer baseVersion(Resource resource) {
         final VersionWrapper wrapper;
-        try {
-            wrapper = objectMapper().readValue(resource.readAsString(), VersionWrapper.class);
+        try (final InputStream stream = resource.inputStream()) {
+            wrapper = objectMapper().readValue(stream, VersionWrapper.class);
         } catch (Throwable t) {
             throw new ConfigParseException(resource.location(), t);
         }
@@ -58,9 +60,9 @@ public class YamlAppConfigFactory implements AppConfigFactory {
     public AppConfig parse(Resource resource) {
         logger.debug("Parsing YAML configuration from %s".formatted(resource.location()));
 
-        try {
+        try (final InputStream stream = resource.inputStream()) {
             final ObjectMapper objectMapper = objectMapper();
-            return mapper.map(objectMapper.readValue(resource.readAsString(), YamlAppConfig.class));
+            return mapper.map(objectMapper.readValue(stream, YamlAppConfig.class));
         } catch (Throwable t) {
             throw new ConfigParseException(resource.location(), t);
         }

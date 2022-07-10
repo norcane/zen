@@ -3,10 +3,8 @@ package com.norcane.zen.resource.classpath;
 import com.google.common.io.Files;
 
 import com.norcane.zen.resource.Resource;
-import com.norcane.zen.resource.exception.CannotReadResourceException;
 
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 public class ClassPathResource implements Resource {
@@ -41,13 +39,7 @@ public class ClassPathResource implements Resource {
     }
 
     @Override
-    public String readAsString() {
-        try {
-            try (final InputStream stream = getClass().getResourceAsStream(this.location)) {
-                return new String(Objects.requireNonNull(stream).readAllBytes(), StandardCharsets.UTF_8);
-            }
-        } catch (Exception e) {
-            throw new CannotReadResourceException(this, e);
-        }
+    public InputStream inputStream() {
+        return getClass().getResourceAsStream(this.location);
     }
 }

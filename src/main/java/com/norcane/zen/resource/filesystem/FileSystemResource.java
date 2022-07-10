@@ -4,6 +4,7 @@ import com.norcane.zen.resource.Resource;
 import com.norcane.zen.resource.exception.CannotReadResourceException;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
@@ -41,9 +42,9 @@ public class FileSystemResource implements Resource {
     }
 
     @Override
-    public String readAsString() {
+    public InputStream inputStream() {
         try {
-            return Files.readString(location);
+            return Files.newInputStream(location);
         } catch (IOException e) {
             throw new CannotReadResourceException(this, e);
         }
