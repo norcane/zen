@@ -15,7 +15,7 @@ public class InlineResource implements Resource {
     private final String type;
     private final String content;
 
-    private InlineResource(String name, String type, final String content) {
+    private InlineResource(final String name, final String type, final String content) {
         this.name = name;
         this.type = type;
         this.content = content;

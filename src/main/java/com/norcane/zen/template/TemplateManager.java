@@ -28,7 +28,7 @@ public class TemplateManager implements Memoizable {
     private final AppConfigManager appConfigManager;
     private final Console console;
     private final LanguageSupportManager languageSupportManager;
-    private final Map<String, TemplateFactory> factories;
+    private final Map<String, TemplateFactory> extensionToFactory;
     private final ResourceManager resourceManager;
 
     private Map<String, Template> templates = new HashMap<>();
@@ -37,18 +37,18 @@ public class TemplateManager implements Memoizable {
     public TemplateManager(final AppConfigManager appConfigManager,
                            final Console console,
                            final LanguageSupportManager languageSupportManager,
-                           final Instance<TemplateFactory> factories,
+                           final Instance<TemplateFactory> extensionToFactory,
                            final ResourceManager resourceManager) {
 
         this.appConfigManager = Objects.requireNonNull(appConfigManager);
         this.console = Objects.requireNonNull(console);
         this.languageSupportManager = Objects.requireNonNull(languageSupportManager);
-        this.factories = factoriesMap(Objects.requireNonNull(factories));
+        this.extensionToFactory = extensionToFactory(Objects.requireNonNull(extensionToFactory));
         this.resourceManager = Objects.requireNonNull(resourceManager);
     }
 
     public Set<String> managedTemplateExtensions() {
-        return factories.keySet();
+        return extensionToFactory.keySet();
     }
 
     public Map<String, Template> templates() {
@@ -77,7 +77,7 @@ public class TemplateManager implements Memoizable {
                         }
 
                         final Resource template = entry.getValue().get(0);
-                        return factories.get(template.type()).compile(template);
+                        return extensionToFactory.get(template.type()).compile(template);
                     }
                 ));
 
@@ -91,7 +91,7 @@ public class TemplateManager implements Memoizable {
         this.templates.clear();
     }
 
-    private static Map<String, TemplateFactory> factoriesMap(final Instance<TemplateFactory> factories) {
+    private static Map<String, TemplateFactory> extensionToFactory(final Instance<TemplateFactory> factories) {
         return factories.stream()
             .collect(Collectors.toMap(TemplateFactory::templateType, templateFactory -> templateFactory));
     }

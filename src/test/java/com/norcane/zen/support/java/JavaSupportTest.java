@@ -1,4 +1,4 @@
-package com.norcane.zen.support.impl;
+package com.norcane.zen.support.java;
 
 import org.junit.jupiter.api.Test;
 
@@ -22,6 +22,6 @@ class JavaSupportTest {
 
     @Test
     void fileExtensions() {
-        assertFalse(javaSupport.fileExtensions().isEmpty());
+        assertFalse(javaSupport.resourceTypes().isEmpty());
     }
 }

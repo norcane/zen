@@ -11,10 +11,6 @@ public class CannotReadResourceException extends ZenRuntimeException {
 
     private final Resource resource;
 
-    public CannotReadResourceException(Resource resource) {
-        this.resource = Objects.requireNonNull(resource);
-    }
-
     public CannotReadResourceException(Resource resource, Throwable cause) {
         super(cause);
         this.resource = Objects.requireNonNull(resource);

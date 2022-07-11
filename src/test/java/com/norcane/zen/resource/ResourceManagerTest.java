@@ -36,8 +36,9 @@ class ResourceManagerTest {
         Files.createFile(tempDirectory.resolve(fileB));
 
         final List<Resource> resources = resourceManager.resources(tempDirectory.toString());
-        assertEquals(1, resources.size());
+        assertEquals(2, resources.size());
         assertTrue(resources.stream().anyMatch(resource -> resource.location().endsWith("a.txt")));
+        assertTrue(resources.stream().anyMatch(resource -> resource.location().endsWith("b.txt")));
 
     }
 

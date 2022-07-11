@@ -50,7 +50,7 @@ public class FileSystemResourceFactory implements ResourceFactory {
 
             if (Files.isDirectory(path)) {
                 // if path is directory, find all files inside the directory
-                return findResources(path.resolve("*").toString(), filter);
+                return findResources(path.resolve("**").toString(), filter);
             } else if (Files.isReadable(path)) {
                 // if it's path to file, return the file itself
                 return List.of(FileSystemResource.of(path));

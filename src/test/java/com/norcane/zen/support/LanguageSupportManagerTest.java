@@ -23,13 +23,13 @@ class LanguageSupportManagerTest {
     Instance<LanguageSupport> languageSupports;
 
     @Test
-    void managedFileExtensions() {
+    void managedResourceTypes() {
         final Set<String> allExtensions = languageSupports.stream()
-            .map(LanguageSupport::fileExtensions)
+            .map(LanguageSupport::resourceTypes)
             .flatMap(Collection::stream)
             .collect(Collectors.toSet());
 
-        assertEquals(allExtensions, manager.managedFileExtensions());
+        assertEquals(allExtensions, manager.managedResourceTypes());
     }
 
     @Test

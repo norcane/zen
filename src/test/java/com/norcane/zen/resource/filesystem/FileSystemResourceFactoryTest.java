@@ -65,8 +65,9 @@ class FileSystemResourceFactoryTest {
 
         // check if correctly resolves directory path
         final List<Resource> resources1 = factory.resources(tempDirectory.toString(), resource -> true);
-        assertEquals(1, resources1.size());
+        assertEquals(2, resources1.size());
         assertTrue(resources1.stream().anyMatch(resource -> resource.location().endsWith("a.txt")));
+        assertTrue(resources1.stream().anyMatch(resource -> resource.location().endsWith("b.txt")));
 
         // check if correctly resolves single file path
         final List<Resource> resources2 = factory.resources(tempDirectory.resolve(fileA).toString(), resource -> true);
