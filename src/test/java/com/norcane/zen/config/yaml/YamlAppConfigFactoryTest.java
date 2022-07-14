@@ -4,7 +4,6 @@ import com.norcane.zen.config.exception.ConfigParseException;
 import com.norcane.zen.config.exception.MissingConfigVersionException;
 import com.norcane.zen.meta.SemVer;
 import com.norcane.zen.resource.Resource;
-import com.norcane.zen.resource.inline.InlineResource;
 
 import org.junit.jupiter.api.Test;
 
@@ -28,20 +27,20 @@ public class YamlAppConfigFactoryTest {
 
     @Test
     public void testBaseVersion() {
-        final Resource yamlValidVersion = InlineResource.of(
+        final Resource yamlValidVersion = Resource.inline(
             "test",
             "yaml",
             """
                 base-version: 0.1.0
                 foo: bar
                 """);
-        final Resource yamlMissingVersion = InlineResource.of(
+        final Resource yamlMissingVersion = Resource.inline(
             "test",
             "yaml",
             """
                 foo: bar
                 """);
-        final Resource yamlInvalid = InlineResource.of("test", "yaml", "foo");
+        final Resource yamlInvalid = Resource.inline("test", "yaml", "foo");
 
         assertEquals(SemVer.from("0.1.0"), factory.baseVersion(yamlValidVersion));
         assertThrows(MissingConfigVersionException.class, () -> factory.baseVersion(yamlMissingVersion));
@@ -50,14 +49,14 @@ public class YamlAppConfigFactoryTest {
 
     @Test
     public void testParse() {
-        final Resource yaml = InlineResource.of(
+        final Resource yaml = Resource.inline(
             "test",
             "yaml",
             """
                 base-version: 0.1.0
                 foo: "bar"
                 """);
-        final Resource yamlInvalid = InlineResource.of("test", "yaml", "foo");
+        final Resource yamlInvalid = Resource.inline("test", "yaml", "foo");
 
         assertEquals(SemVer.from("0.1.0"), factory.parse(yaml).baseVersion());
         assertThrows(ConfigParseException.class, () -> factory.parse(yamlInvalid));

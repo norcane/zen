@@ -1,7 +1,6 @@
 package com.norcane.zen.template.mustache;
 
 import com.norcane.zen.resource.Resource;
-import com.norcane.zen.resource.inline.InlineResource;
 import com.norcane.zen.template.Template;
 import com.norcane.zen.template.TemplateFactory;
 
@@ -23,7 +22,7 @@ public class MustacheTemplateTest {
     @Test
     public void testRender() {
         final String expected = "Hello John, 42 years old";
-        final Resource resource = InlineResource.of("test", "mustache", "Hello {{name}}, {{info.age}} years old");
+        final Resource resource = Resource.inline("test", "mustache", "Hello {{name}}, {{info.age}} years old");
         final Template template = templateFactory.compile(resource);
 
         final Map<String, Object> variables = Map.of(
@@ -37,7 +36,7 @@ public class MustacheTemplateTest {
 
     @Test
     void testToString() {
-        final Resource resource = InlineResource.of("test", "mustache", "Hello {{name}}, {{info.age}} years old");
+        final Resource resource = Resource.inline("test", "mustache", "Hello {{name}}, {{info.age}} years old");
         final Template template = templateFactory.compile(resource);
 
         assertNotNull(template.toString());

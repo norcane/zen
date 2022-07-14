@@ -1,12 +1,17 @@
 package com.norcane.zen.resource.filesystem;
 
 
+import com.google.common.io.CharStreams;
+
 import com.norcane.zen.resource.Resource;
 import com.norcane.zen.resource.exception.CannotReadResourceException;
+import com.norcane.zen.resource.exception.CannotWriteResourceException;
 
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.Reader;
+import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -22,23 +27,23 @@ class FileSystemResourceTest {
     private static String location;
     private static Resource resource;
 
-    @BeforeAll
-    public static void init() throws Exception {
+    @BeforeEach
+    void init() throws Exception {
         final Path tempFile = Files.createTempFile(null, null);
         Files.writeString(tempFile, content);
 
         location = tempFile.toAbsolutePath().toString();
-        resource = FileSystemResource.of(tempFile);
+        resource = Resource.file(tempFile);
     }
 
     @Test
     void name() {
-        assertEquals("name", FileSystemResource.of(Path.of("/foo/bar/name.txt")).name());
+        assertEquals("name", Resource.file("/foo/bar/name.txt").name());
     }
 
     @Test
     void type() {
-        assertEquals("txt", FileSystemResource.of(Path.of("/foo/bar/name.txt")).type());
+        assertEquals("txt", Resource.file("/foo/bar/name.txt").type());
     }
 
     @Test
@@ -47,9 +52,35 @@ class FileSystemResourceTest {
     }
 
     @Test
+    void reader() throws Exception {
+        try (final Reader reader = resource.reader()) {
+            assertEquals(content, CharStreams.toString(reader));
+        }
+    }
+
+    @Test
+    void writer() throws Exception {
+        final String newContent = "General Kenobi!";
+
+        try (final Writer writer = resource.writer()) {
+            writer.write(newContent);
+        }
+
+        try (final Reader reader = resource.reader()) {
+            assertEquals(newContent, CharStreams.toString(reader));
+        }
+
+        assertThrows(CannotWriteResourceException.class, () -> {
+            try (final Writer writer = Resource.file("/non/existing").writer()) {
+                writer.write("foo bar");
+            }
+        });
+    }
+
+    @Test
     void readAsString() {
         assertEquals(content, resource.readAsString());
-        assertThrows(CannotReadResourceException.class, () -> FileSystemResource.of(Path.of("/not/existing")).readAsString());
+        assertThrows(CannotReadResourceException.class, () -> Resource.file("/not/existing").readAsString());
     }
 
     @Test

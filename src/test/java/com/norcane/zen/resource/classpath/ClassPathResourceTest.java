@@ -1,10 +1,14 @@
 package com.norcane.zen.resource.classpath;
 
 
+import com.google.common.io.CharStreams;
+
 import com.norcane.zen.resource.Resource;
 import com.norcane.zen.resource.exception.CannotReadResourceException;
 
 import org.junit.jupiter.api.Test;
+
+import java.io.Reader;
 
 import io.quarkus.test.junit.QuarkusTest;
 
@@ -14,8 +18,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @QuarkusTest
 class ClassPathResourceTest {
 
-    private static final String location = "/classpath-resource.txt";
-    private static final Resource resource = ClassPathResource.of(location);
+    static final String content = "Hello there!";
+    static final String location = "/classpath-resource.txt";
+    static final Resource resource = Resource.classPath(location);
 
     @Test
     void name() {
@@ -33,8 +38,20 @@ class ClassPathResourceTest {
     }
 
     @Test
+    void reader() throws Exception {
+        try (final Reader reader = resource.reader()) {
+            assertEquals(content, CharStreams.toString(reader));
+        }
+    }
+
+    @Test
+    void writer() {
+        assertThrows(UnsupportedOperationException.class, resource::writer);
+    }
+
+    @Test
     void readAsString() {
-        assertEquals("Hello there!", resource.readAsString());
-        assertThrows(CannotReadResourceException.class, () -> ClassPathResource.of("/not/existing").readAsString());
+        assertEquals(content, resource.readAsString());
+        assertThrows(CannotReadResourceException.class, () -> Resource.classPath("/not/existing").readAsString());
     }
 }

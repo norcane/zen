@@ -5,7 +5,6 @@ import com.norcane.zen.config.model.AppConfig;
 import com.norcane.zen.config.model.AppConfigBuilder;
 import com.norcane.zen.resource.Resource;
 import com.norcane.zen.resource.ResourceManager;
-import com.norcane.zen.resource.inline.InlineResource;
 import com.norcane.zen.template.exception.DuplicateTemplatesFoundException;
 import com.norcane.zen.template.mustache.MustacheTemplate;
 
@@ -49,8 +48,8 @@ class TemplateManagerTest {
     @Test
     void templates() {
         final String templatesPath = "templates";
-        final Resource template1 = InlineResource.of("test", "mustache", "Hello, {{name}}!");
-        final Resource template2 = InlineResource.of("test", "freemarker", "Hello, ${name}!");
+        final Resource template1 = Resource.inline("test", "mustache", "Hello, {{name}}!");
+        final Resource template2 = Resource.inline("test", "freemarker", "Hello, ${name}!");
         final AppConfig appConfig = AppConfigBuilder.builder().templates(List.of(templatesPath)).build();
 
         // mocks

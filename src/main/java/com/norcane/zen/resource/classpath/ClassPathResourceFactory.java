@@ -23,7 +23,7 @@ public class ClassPathResourceFactory implements ResourceFactory {
     public Optional<Resource> resource(final String location) {
         return Optional
             .ofNullable(getClass().getResource(location))
-            .map(url -> ClassPathResource.of(location));
+            .map(url -> Resource.classPath(location));
     }
 
     @Override

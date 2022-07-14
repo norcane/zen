@@ -40,7 +40,7 @@ public class FileSystemResourceFactory implements ResourceFactory {
     @Override
     public Optional<Resource> resource(final String location) {
         final Path path = Path.of(location);
-        return Files.isReadable(path) ? Optional.of(FileSystemResource.of(path)) : Optional.empty();
+        return Files.isReadable(path) ? Optional.of(Resource.file(path)) : Optional.empty();
     }
 
     @Override
@@ -53,7 +53,7 @@ public class FileSystemResourceFactory implements ResourceFactory {
                 return findResources(path.resolve("**").toString(), filter);
             } else if (Files.isReadable(path)) {
                 // if it's path to file, return the file itself
-                return List.of(FileSystemResource.of(path));
+                return List.of(Resource.file(path));
             } else {
                 // nothing found
                 return Collections.emptyList();
@@ -78,8 +78,7 @@ public class FileSystemResourceFactory implements ResourceFactory {
             return stream
                 .filter(Files::isRegularFile)
                 .filter(path -> pathMatcher.matches(pattern, Path.of(rootDir).relativize(path)))
-                .map(FileSystemResource::of)
-                .map(Resource.class::cast)
+                .map(Resource::file)
                 .filter(filter)
                 .toList();
         } catch (IOException e) {

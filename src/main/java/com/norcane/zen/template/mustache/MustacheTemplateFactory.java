@@ -7,7 +7,6 @@ import com.norcane.zen.template.Template;
 import com.norcane.zen.template.TemplateFactory;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UncheckedIOException;
 
@@ -27,7 +26,7 @@ public class MustacheTemplateFactory implements TemplateFactory {
 
     @Override
     public Template compile(Resource resource) {
-        try (final Reader reader = new InputStreamReader(resource.inputStream())) {
+        try (final Reader reader = resource.reader()) {
             return new MustacheTemplate(resource.location(), mustacheFactory.compile(reader, resource.location()));
         } catch (IOException e) {
             throw new UncheckedIOException(e);

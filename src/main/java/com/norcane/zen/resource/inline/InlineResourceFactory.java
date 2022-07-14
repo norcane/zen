@@ -27,7 +27,7 @@ public class InlineResourceFactory implements ResourceFactory {
             throw new IllegalArgumentException("Illegal inline resource '%s', expected format NAME:TYPE:CONTENT".formatted(location));
         }
 
-        return Optional.of(InlineResource.of(chunks[0], chunks[1], chunks[2]));
+        return Optional.of(Resource.inline(chunks[0], chunks[1], chunks[2]));
     }
 
     @Override

@@ -4,7 +4,9 @@ import com.google.common.io.Files;
 
 import com.norcane.zen.resource.Resource;
 
-import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.Writer;
 import java.util.Objects;
 
 public class ClassPathResource implements Resource {
@@ -39,7 +41,12 @@ public class ClassPathResource implements Resource {
     }
 
     @Override
-    public InputStream inputStream() {
-        return getClass().getResourceAsStream(this.location);
+    public Reader reader() {
+        return new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream(this.location)));
+    }
+
+    @Override
+    public Writer writer() {
+        throw new UnsupportedOperationException("Write operation into '%s' not supported".formatted(this));
     }
 }

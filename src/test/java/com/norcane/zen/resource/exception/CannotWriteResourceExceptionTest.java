@@ -9,10 +9,10 @@ import io.quarkus.test.junit.QuarkusTest;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @QuarkusTest
-class CannotReadResourceExceptionTest {
+class CannotWriteResourceExceptionTest {
 
     static final Resource resource = Resource.inline("test", "txt", "test");
-    static final CannotReadResourceException exception = new CannotReadResourceException(resource, null);
+    static final CannotWriteResourceException exception = new CannotWriteResourceException(resource, null);
 
     @Test
     void problem() {

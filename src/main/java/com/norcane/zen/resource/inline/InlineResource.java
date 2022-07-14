@@ -2,9 +2,9 @@ package com.norcane.zen.resource.inline;
 
 import com.norcane.zen.resource.Resource;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.Writer;
 import java.util.Objects;
 
 public class InlineResource implements Resource {
@@ -41,12 +41,18 @@ public class InlineResource implements Resource {
     }
 
     @Override
-    public InputStream inputStream() {
-        return new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8));
+    public Reader reader() {
+        return new StringReader(content);
+    }
+
+    @Override
+    public Writer writer() {
+        throw new UnsupportedOperationException("Write operation into '%s' not supported".formatted(this));
     }
 
     @Override
     public String readAsString() {
+        // specialized implementation, to avoid calling #reader() and creating new Reader instance
         return content;
     }
 }
