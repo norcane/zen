@@ -25,6 +25,9 @@ public class SemVerTest {
         assertEquals(-1, SemVer.from("0.1.0-RC2").compareTo(SemVer.from("0.1.0-RC3")));
         assertEquals(-1, SemVer.from("0.1.0").compareTo(SemVer.from("0.1.1")));
         assertEquals(1, SemVer.from("1.0.1").compareTo(SemVer.from("0.2.1")));
+        assertEquals(1, SemVer.from("1.1.0").compareTo(SemVer.from("1.0.0")));
+        assertEquals(-1, SemVer.from("1.0.0-RC1").compareTo(SemVer.from("1.0.0")));
+        assertEquals(1, SemVer.from("1.0.0-2").compareTo(SemVer.from("1.0.0-1")));
     }
 
     @Test
