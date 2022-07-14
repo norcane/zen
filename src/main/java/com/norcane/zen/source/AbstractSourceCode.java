@@ -38,6 +38,10 @@ public abstract class AbstractSourceCode implements SourceCode {
                 final String line = reader.readLine();
                 lineNumber++;
 
+                if (line == null) {
+                    break;
+                }
+
                 if (headerStart < 0 && headerSyntax.isStart(line)) {
                     headerStart = lineNumber;
                     lines.add(line);     // FIXME proper line handling
