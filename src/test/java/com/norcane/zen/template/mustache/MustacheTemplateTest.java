@@ -6,21 +6,28 @@ import com.norcane.zen.template.TemplateFactory;
 
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.io.StringWriter;
+import java.io.UncheckedIOException;
+import java.io.Writer;
 import java.util.Map;
 
 import io.quarkus.test.junit.QuarkusTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 @QuarkusTest
-public class MustacheTemplateTest {
+class MustacheTemplateTest {
 
-    private final TemplateFactory templateFactory = new MustacheTemplateFactory();
+    final TemplateFactory templateFactory = new MustacheTemplateFactory();
 
     @Test
-    public void testRender() {
+    public void render() {
         final String expected = "Hello John, 42 years old";
         final Resource resource = Resource.inline("test", "mustache", "Hello {{name}}, {{info.age}} years old");
         final Template template = templateFactory.compile(resource);
@@ -32,6 +39,21 @@ public class MustacheTemplateTest {
 
         assertEquals(resource.location(), template.getName());
         assertEquals(expected, template.render(new StringWriter(), variables).toString());
+    }
+
+    @Test
+    void render_ioException() throws IOException {
+        final Resource resource = Resource.inline("test", "mustache", "test");
+        final Template template = templateFactory.compile(resource);
+
+        // -- mocks
+        final Writer writer = mock(Writer.class);
+        doThrow(IOException.class).when(writer).flush();
+
+        assertThrows(UncheckedIOException.class, () -> template.render(writer, Map.of()));
+
+        // -- verify
+        verify(writer).flush();
     }
 
     @Test
