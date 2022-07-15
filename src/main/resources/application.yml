@@ -16,3 +16,6 @@ quarkus:
   quarkus:
     jacoco:
       title: zen test coverage report
+  zen:
+    console:
+      enabled: false

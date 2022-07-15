@@ -1,11 +1,19 @@
 package com.norcane.zen.ui;
 
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+
 import javax.enterprise.context.ApplicationScoped;
 
 import picocli.CommandLine;
 
 @ApplicationScoped
 public class Console {
+
+    final boolean enabled;
+
+    public Console(@ConfigProperty(name = "zen.console.enabled", defaultValue = "true") final boolean enabled) {
+        this.enabled = enabled;
+    }
 
     public void emptyLine() {
         print("");
@@ -24,15 +32,21 @@ public class Console {
         print(text);
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
     public void print(final PrettyPrintable printable) {
         print(printable.toPretty());
     }
 
     public void print(final String text) {
-        System.out.println(ansiString(text));
+        if (isEnabled()) {
+            System.out.println(ansiString(text));
+        }
     }
 
-    private String ansiString(final String text) {
+    String ansiString(final String text) {
         return CommandLine.Help.Ansi.AUTO.string(text);
     }
 }

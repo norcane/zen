@@ -37,7 +37,7 @@ public abstract class SubCommand implements Runnable {
         console.print(ProductInfo.productHeader());
     }
 
-    private void handleZenRuntimeException(ZenRuntimeException e) {
+    void handleZenRuntimeException(ZenRuntimeException e) {
         Log.error(e);
         console.emptyLine();
         console.error(e);
