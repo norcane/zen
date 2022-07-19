@@ -1,6 +1,6 @@
 package com.norcane.zen.cli.command;
 
-import com.norcane.zen.source.SourceProcessor;
+import com.norcane.zen.source.SourceCodeManager;
 
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +15,7 @@ import static org.mockito.Mockito.verify;
 class RunCommandTest {
 
     @InjectMock
-    SourceProcessor sourceProcessor;
+    SourceCodeManager sourceCodeManager;
 
     @Inject
     RunCommand runCommand;
@@ -25,6 +25,6 @@ class RunCommandTest {
         runCommand.execute();
 
         // -- verify
-        verify(sourceProcessor).process();
+        verify(sourceCodeManager).sourceCodes();
     }
 }

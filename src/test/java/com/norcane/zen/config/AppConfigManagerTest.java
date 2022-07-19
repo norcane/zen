@@ -49,9 +49,11 @@ public class AppConfigManagerTest {
         when(appConfigManager.userConfigPath(any())).thenReturn(nonExistingConfigPath, absolutePath(validConfigPath));
 
         // test case when no configuration is present
+        appConfigManager.resetMemoizedState();
         assertThrows(NoConfigFileFoundException.class, appConfigManager::userConfig);
 
         // test loading of existing configuration
+        appConfigManager.resetMemoizedState();
         final AppConfig userConfig = appConfigManager.userConfig();
         assertNotNull(userConfig);
         assertEquals(SemVer.from("0.1.0"), userConfig.baseVersion());

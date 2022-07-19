@@ -46,13 +46,25 @@ class TemplateManagerTest {
     }
 
     @Test
+    void templatePaths() {
+        final String templatesPath = "templates";
+        final AppConfig appConfig = AppConfigBuilder.builder().templates(List.of(templatesPath)).build();
+
+        // -- mocks
+        when(appConfigManager.finalConfig()).thenReturn(appConfig);
+
+        assertEquals(List.of(templatesPath), manager.templatePaths());
+        assertThrows(UnsupportedOperationException.class, () -> manager.templatePaths().add(null));
+    }
+
+    @Test
     void templates() {
         final String templatesPath = "templates";
         final Resource template1 = Resource.inline("test", "mustache", "Hello, {{name}}!");
         final Resource template2 = Resource.inline("test", "freemarker", "Hello, ${name}!");
         final AppConfig appConfig = AppConfigBuilder.builder().templates(List.of(templatesPath)).build();
 
-        // mocks
+        // -- mocks
         when(appConfigManager.finalConfig()).thenReturn(appConfig);
         when(resourceManager.resources(eq(templatesPath), any()))
             .thenReturn(List.of(template1))             // valid state - only one template type for source type
@@ -62,10 +74,12 @@ class TemplateManagerTest {
         assertTrue(templates.containsKey("test"));
         assertTrue(templates.get("test") instanceof MustacheTemplate);
 
+        assertThrows(UnsupportedOperationException.class, () -> manager.templates().put("foo", null));
+
         manager.resetMemoizedState();
         assertThrows(DuplicateTemplatesFoundException.class, () -> manager.templates());
 
-        // verify
+        // -- verify
         verify(appConfigManager, times(2)).finalConfig();
         verify(resourceManager, times(2)).resources(eq(templatesPath), any());
     }
