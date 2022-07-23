@@ -27,11 +27,16 @@ public class RunCommand extends SubCommand {
     }
 
     @Override
-    public void execute() {
-        // print initial info
-        console.print(
-            "Loaded @|bold %d|@ templates from @|bold %s|@".formatted(templateManager.templates().size(), templateManager.templatePaths()));
-        console.print(
-            "Loaded @|bold %d|@ source code files from @|bold %s|@".formatted(sourceCodeManager.sourceCodes().size(), sourceCodeManager.sourceCodePaths()));
+    protected void execute() {
+        printSummaryIntro();
+    }
+
+    private void printSummaryIntro() {
+        final int numberOfTemplates = templateManager.templates().size();
+        final int numberOfSources = sourceCodeManager.sourceCodes().size();
+
+        console.print("Loaded @|bold %d|@ templates from @|bold %s|@".formatted(numberOfTemplates, templateManager.templatePaths()));
+        console.print("Loaded @|bold %d|@ source code files from @|bold %s|@".formatted(numberOfSources, sourceCodeManager.sourceCodePaths()));
+
     }
 }

@@ -19,6 +19,7 @@ import static com.norcane.zen.data.MergeStrategies.latter;
 @RecordBuilder()
 @RecordBuilder.Options(addClassRetainedGenerated = true, inheritComponentAnnotations = false)
 public record AppConfig(@NotNull SemVer baseVersion,
+                        @NotNull Mode mode,
                         @NotEmpty List<String> templates,
                         @NotEmpty List<String> sources)
     implements Mergeable<AppConfig>, AppConfigBuilder.With {
@@ -26,6 +27,7 @@ public record AppConfig(@NotNull SemVer baseVersion,
     @Override
     public AppConfig merge(AppConfig that) {
         return new AppConfig(latter(this.baseVersion(), that.baseVersion()),
+                             latter(this.mode(), that.mode()),
                              concatLists(this.templates(), that.templates()),
                              concatLists(this.sources(), that.sources()));
     }

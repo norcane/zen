@@ -10,6 +10,7 @@ import io.quarkus.runtime.annotations.RegisterForReflection;
 @RegisterForReflection
 public record YamlAppConfig(
     @JsonProperty("base-version") SemVer baseVersion,
+    @JsonProperty("mode") YamlMode mode,
     @JsonProperty("templates") List<String> templates,
     @JsonProperty("sources") List<String> sources
 ) {
