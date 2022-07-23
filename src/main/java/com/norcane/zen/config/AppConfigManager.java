@@ -6,10 +6,10 @@ import com.norcane.zen.config.exception.InvalidConfigurationException;
 import com.norcane.zen.config.exception.MultipleConfigFilesFoundException;
 import com.norcane.zen.config.exception.NoConfigFileFoundException;
 import com.norcane.zen.config.model.AppConfig;
+import com.norcane.zen.config.model.AppConfigRef;
 import com.norcane.zen.meta.ProductInfo;
 import com.norcane.zen.resource.Resource;
 import com.norcane.zen.resource.ResourceManager;
-import com.norcane.zen.ui.Console;
 
 import java.io.File;
 import java.util.List;
@@ -29,44 +29,43 @@ public class AppConfigManager implements Memoizable {
     private static final String CONFIG_FILE_NAME = ProductInfo.NAME;
 
     private final Instance<AppConfigFactory> factories;
-    private final Console console;
     private final ResourceManager resourceManager;
     private final Validator validator;
 
-    private AppConfig defaultConfig;
-    private AppConfig userConfig;
-    private AppConfig finalConfig;
+    private AppConfigRef defaultConfigRef;
+    private AppConfigRef userConfigRef;
+    private AppConfigRef finalConfigRef;
 
     @Inject
     public AppConfigManager(final Instance<AppConfigFactory> factories,
-                            final Console console,
                             final ResourceManager resourceManager,
                             final Validator validator) {
 
         this.factories = Objects.requireNonNull(factories);
-        this.console = Objects.requireNonNull(console);
         this.resourceManager = Objects.requireNonNull(resourceManager);
         this.validator = Objects.requireNonNull(validator);
     }
 
-    public AppConfig defaultConfig() {
-        if (defaultConfig == null) {
+    public AppConfigRef defaultConfigRef() {
+        if (this.defaultConfigRef == null) {
             final String defaultConfigExtension = DEFAULT_CONFIG_PATH.substring(DEFAULT_CONFIG_PATH.lastIndexOf(".") + 1);
             final Resource resource = resourceManager.resource(DEFAULT_CONFIG_PATH);
 
-            defaultConfig = factories
+            final AppConfig config = factories
                 .stream()
                 .filter(factory -> factory.fileExtension().equals(defaultConfigExtension))
                 .map(factory -> factory.parse(resource))
                 .findAny()
                 .orElseThrow();
+
+            this.defaultConfigRef = new AppConfigRef(config, resource);
         }
 
-        return defaultConfig;
+        return this.defaultConfigRef;
     }
 
-    public AppConfig userConfig() {
-        if (userConfig == null) {
+    public AppConfigRef userConfigRef() {
+        if (this.userConfigRef == null) {
             final List<AppConfigFactory> availableFactories = factories
                 .stream()
                 .filter(factory -> new File(userConfigPath(factory.fileExtension())).isFile())
@@ -94,28 +93,27 @@ public class AppConfigManager implements Memoizable {
 
             // TODO config compatibility check
 
-            userConfig = factory.parse(resource);
-            console.print("Loaded user configuration file: " + resource.location());
+            this.userConfigRef = new AppConfigRef(factory.parse(resource), resource);
         }
 
-        return userConfig;
+        return this.userConfigRef;
     }
 
-    public AppConfig finalConfig() {
-        if (finalConfig == null) {
-            final AppConfig defaultConfig = defaultConfig();
-            final AppConfig userConfig = userConfig();
-            final AppConfig mergedConfig = defaultConfig.merge(userConfig);
+    public AppConfigRef finalConfigRef() {
+        if (this.finalConfigRef == null) {
+            final AppConfigRef defaultConfigRef = defaultConfigRef();
+            final AppConfigRef userConfigRef = userConfigRef();
+            final AppConfig mergedConfig = defaultConfigRef.config().merge(userConfigRef.config());
 
             final Set<ConstraintViolation<AppConfig>> violations = validator.validate(mergedConfig);
             if (!violations.isEmpty()) {
                 throw new InvalidConfigurationException(violations);
             }
 
-            finalConfig = mergedConfig;
+            this.finalConfigRef = new AppConfigRef(mergedConfig, userConfigRef.resource());
         }
 
-        return finalConfig;
+        return this.finalConfigRef;
     }
 
     protected String userConfigPath(final String extension) {
@@ -126,8 +124,8 @@ public class AppConfigManager implements Memoizable {
 
     @Override
     public void resetMemoizedState() {
-        this.defaultConfig = null;
-        this.userConfig = null;
-        this.finalConfig = null;
+        this.defaultConfigRef = null;
+        this.userConfigRef = null;
+        this.finalConfigRef = null;
     }
 }

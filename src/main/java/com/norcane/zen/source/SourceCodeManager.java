@@ -37,7 +37,7 @@ public class SourceCodeManager implements Memoizable {
     }
 
     public List<String> sourceCodePaths() {
-        return Collections.unmodifiableList(appConfigManager.finalConfig().sources());
+        return Collections.unmodifiableList(appConfigManager.finalConfigRef().config().sources());
     }
 
     public List<SourceCode> sourceCodes() {

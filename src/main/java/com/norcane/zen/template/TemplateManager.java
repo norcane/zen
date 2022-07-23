@@ -48,7 +48,7 @@ public class TemplateManager implements Memoizable {
     }
 
     public List<String> templatePaths() {
-        return Collections.unmodifiableList(appConfigManager.finalConfig().templates());
+        return Collections.unmodifiableList(appConfigManager.finalConfigRef().config().templates());
     }
 
     public Map<String, Template> templates() {

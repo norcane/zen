@@ -3,6 +3,8 @@ package com.norcane.zen.template;
 import com.norcane.zen.config.AppConfigManager;
 import com.norcane.zen.config.model.AppConfig;
 import com.norcane.zen.config.model.AppConfigBuilder;
+import com.norcane.zen.config.model.AppConfigRef;
+import com.norcane.zen.config.model.AppConfigRefBuilder;
 import com.norcane.zen.resource.Resource;
 import com.norcane.zen.resource.ResourceManager;
 import com.norcane.zen.template.exception.DuplicateTemplatesFoundException;
@@ -49,9 +51,10 @@ class TemplateManagerTest {
     void templatePaths() {
         final String templatesPath = "templates";
         final AppConfig appConfig = AppConfigBuilder.builder().templates(List.of(templatesPath)).build();
+        final AppConfigRef appConfigRef = AppConfigRefBuilder.builder().config(appConfig).build();
 
         // -- mocks
-        when(appConfigManager.finalConfig()).thenReturn(appConfig);
+        when(appConfigManager.finalConfigRef()).thenReturn(appConfigRef);
 
         assertEquals(List.of(templatesPath), manager.templatePaths());
         assertThrows(UnsupportedOperationException.class, () -> manager.templatePaths().add(null));
@@ -63,9 +66,10 @@ class TemplateManagerTest {
         final Resource template1 = Resource.inline("test", "mustache", "Hello, {{name}}!");
         final Resource template2 = Resource.inline("test", "freemarker", "Hello, ${name}!");
         final AppConfig appConfig = AppConfigBuilder.builder().templates(List.of(templatesPath)).build();
+        final AppConfigRef appConfigRef = AppConfigRefBuilder.builder().config(appConfig).build();
 
         // -- mocks
-        when(appConfigManager.finalConfig()).thenReturn(appConfig);
+        when(appConfigManager.finalConfigRef()).thenReturn(appConfigRef);
         when(resourceManager.resources(eq(templatesPath), any()))
             .thenReturn(List.of(template1))             // valid state - only one template type for source type
             .thenReturn(List.of(template1, template2)); // invalid state - two possible templates for one source type
@@ -80,7 +84,7 @@ class TemplateManagerTest {
         assertThrows(DuplicateTemplatesFoundException.class, () -> manager.templates());
 
         // -- verify
-        verify(appConfigManager, times(2)).finalConfig();
+        verify(appConfigManager, times(2)).finalConfigRef();
         verify(resourceManager, times(2)).resources(eq(templatesPath), any());
     }
 }
