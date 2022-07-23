@@ -45,12 +45,8 @@ public class Console {
         print("");
     }
 
-    public void error(final PrettyPrintable printable) {
-        error(printable.toPretty());
-    }
-
-    public void error(final String text) {
-        message("ERROR", text, "red");
+    public void error(final PrettyPrintable prettyPrintable) {
+        message("ERROR", prettyPrintable.toPretty(), "red");
     }
 
     public void message(final String heading, final String text, final String bgColor) {
@@ -60,10 +56,6 @@ public class Console {
 
     public boolean isEnabled() {
         return enabled;
-    }
-
-    public void print(final PrettyPrintable printable) {
-        print(printable.toPretty());
     }
 
     public void print(final String text) {

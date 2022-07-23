@@ -1,6 +1,6 @@
 package com.norcane.zen.ui;
 
-import com.norcane.zen.meta.SemVer;
+import com.norcane.zen.exception.UnexpectedBehaviorException;
 
 import org.junit.jupiter.api.Test;
 
@@ -24,8 +24,7 @@ class ConsoleTest {
 
     @Test
     void error() {
-        console.error("Error!");
-        console.error(SemVer.from("1.2.3"));
+        console.error(new UnexpectedBehaviorException("Uh oh!"));
     }
 
     @Test
@@ -39,7 +38,6 @@ class ConsoleTest {
         when(console.isEnabled()).thenReturn(true);
 
         console.print("Print");
-        console.print(SemVer.from("1.2.3"));
 
         verify(console).ansiString("Print");
     }
