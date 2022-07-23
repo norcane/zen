@@ -1,7 +1,14 @@
 package com.norcane.zen.ui;
 
-import org.eclipse.microprofile.config.inject.ConfigProperty;
+import com.norcane.zen.exception.UnexpectedBehaviorException;
 
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.jline.terminal.Terminal;
+import org.jline.terminal.TerminalBuilder;
+
+import java.io.IOException;
+
+import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
 
 import picocli.CommandLine;
@@ -11,8 +18,27 @@ public class Console {
 
     final boolean enabled;
 
+    private final Terminal terminal;
+
     public Console(@ConfigProperty(name = "zen.console.enabled", defaultValue = "true") final boolean enabled) {
         this.enabled = enabled;
+
+        try {
+            terminal = TerminalBuilder.terminal();
+        } catch (IOException e) {
+            throw new UnexpectedBehaviorException("Error creating Terminal instance", e);
+        }
+    }
+
+    @PreDestroy
+    void destroy() {
+        if (terminal != null) {
+            try {
+                terminal.close();
+            } catch (IOException e) {
+                throw new UnexpectedBehaviorException("Error closing Terminal instance", e);
+            }
+        }
     }
 
     public void emptyLine() {
@@ -44,6 +70,10 @@ public class Console {
         if (isEnabled()) {
             System.out.println(ansiString(text));
         }
+    }
+
+    public int width() {
+        return terminal.getWidth();
     }
 
     String ansiString(final String text) {

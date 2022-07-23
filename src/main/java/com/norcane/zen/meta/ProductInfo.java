@@ -9,6 +9,7 @@ public class ProductInfo {
     public static final String DESCRIPTION = BuildInfo.DESCRIPTION;
     public static final String VERSION = BuildInfo.VERSION;
     public static final String WEBSITE = "https://github.com/norcane/zen";
+    private static final String URL_REPORT_BUG = "https://github.com/norcane/zen/issues/new";
 
     public static String productHeader() {
         return String.format("Welcome to @|bold,magenta %s %s|@ :: @|underline %s|@", NAME, VERSION, WEBSITE);
@@ -16,5 +17,9 @@ public class ProductInfo {
 
     public static SemVer productVersion() {
         return SemVer.from(VERSION);
+    }
+
+    public static String linkReportBug() {
+        return URL_REPORT_BUG;
     }
 }

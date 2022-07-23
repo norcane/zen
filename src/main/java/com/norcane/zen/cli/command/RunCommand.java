@@ -33,8 +33,7 @@ public class RunCommand extends SubCommand {
     @Override
     protected void execute() {
         printSummaryIntro();
-
-
+        System.out.println("WIDTH: " + console.width());
     }
 
     private void printSummaryIntro() {

@@ -54,4 +54,9 @@ class ConsoleTest {
         // -- verify
         verify(console, never()).ansiString("Print");
     }
+
+    @Test
+    void width() {
+        console.width();
+    }
 }

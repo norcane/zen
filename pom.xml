@@ -19,6 +19,7 @@
         <quarkus.platform.version>2.10.3.Final</quarkus.platform.version>
         <surefire-plugin.version>3.0.0-M5</surefire-plugin.version>
 
+        <jline.version>3.21.0</jline.version>
         <mapstruct.version>1.5.2.Final</mapstruct.version>
         <mustache.java.version>0.9.10</mustache.java.version>
         <jackson.version>2.13.3</jackson.version>
@@ -66,6 +67,11 @@
             <groupId>com.github.spullara.mustache.java</groupId>
             <artifactId>compiler</artifactId>
             <version>${mustache.java.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jline</groupId>
+            <artifactId>jline</artifactId>
+            <version>${jline.version}</version>
         </dependency>
         <dependency>
             <groupId>org.mapstruct</groupId>
