@@ -3,7 +3,7 @@ package com.norcane.zen.cli.command;
 import com.norcane.zen.config.AppConfigManager;
 import com.norcane.zen.source.SourceCodeManager;
 import com.norcane.zen.template.TemplateManager;
-import com.norcane.zen.ui.Console;
+import com.norcane.zen.ui.console.Console;
 
 import java.util.Objects;
 
@@ -33,16 +33,15 @@ public class RunCommand extends SubCommand {
     @Override
     protected void execute() {
         printSummaryIntro();
-        System.out.println("WIDTH: " + console.width());
     }
 
     private void printSummaryIntro() {
         final int numberOfTemplates = templateManager.templates().size();
         final int numberOfSources = sourceCodeManager.sourceCodes().size();
 
-        console.print("Loaded configuration from @|bold %s|@".formatted(appConfigManager.finalConfigRef().resource().location()));
-        console.print("Loaded @|bold %d|@ templates from @|bold %s|@".formatted(numberOfTemplates, templateManager.templatePaths()));
-        console.print("Loaded @|bold %d|@ source code files from @|bold %s|@".formatted(numberOfSources, sourceCodeManager.sourceCodePaths()));
+        console.printLn("Loaded configuration from @|bold %s|@".formatted(appConfigManager.finalConfigRef().resource().location()));
+        console.printLn("Loaded @|bold %d|@ templates from @|bold %s|@".formatted(numberOfTemplates, templateManager.templatePaths()));
+        console.printLn("Loaded @|bold %d|@ source code files from @|bold %s|@".formatted(numberOfSources, sourceCodeManager.sourceCodePaths()));
 
     }
 }

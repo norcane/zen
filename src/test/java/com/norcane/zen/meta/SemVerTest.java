@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class SemVerTest {
 
     @Test
-    public void testFrom() {
+    public void from() {
         assertEquals(new SemVer(0, 1, 0, null), SemVer.from("0.1.0"));
         assertEquals(new SemVer(0, 1, 0, "RC3"), SemVer.from("0.1.0-RC3"));
 
@@ -19,7 +19,7 @@ public class SemVerTest {
     }
 
     @Test
-    public void testCompareTo() {
+    public void compareTo() {
         assertEquals(0, SemVer.from("0.1.0").compareTo(SemVer.from("0.1.0")));
         assertEquals(1, SemVer.from("0.1.0").compareTo(SemVer.from("0.1.0-RC3")));
         assertEquals(-1, SemVer.from("0.1.0-RC2").compareTo(SemVer.from("0.1.0-RC3")));
@@ -31,9 +31,9 @@ public class SemVerTest {
     }
 
     @Test
-    public void testToPretty() {
-        assertEquals("0.1.0", SemVer.from("0.1.0").toPretty());
-        assertEquals("0.1.0-RC3", SemVer.from("0.1.0-RC3").toPretty());
+    public void testToString() {
+        assertEquals("0.1.0", SemVer.from("0.1.0").toString());
+        assertEquals("0.1.0-RC3", SemVer.from("0.1.0-RC3").toString());
 
     }
 }

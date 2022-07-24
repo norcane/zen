@@ -17,17 +17,17 @@ public class CannotWriteResourceException extends ZenRuntimeException {
     }
 
     @Override
-    protected String problem() {
+    public String problem() {
         return "Cannot write resource %s".formatted(resource.location());
     }
 
     @Override
-    protected String solution() {
+    public String solution() {
         return "Please check if target resource exists and you have write privileges.";
     }
 
     @Override
-    protected List<String> links() {
+    public List<String> links() {
         return Collections.emptyList();
     }
 }

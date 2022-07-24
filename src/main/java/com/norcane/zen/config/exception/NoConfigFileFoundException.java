@@ -11,17 +11,17 @@ public class NoConfigFileFoundException extends ZenRuntimeException {
     private final List<String> possibleConfigFilePaths;
 
     public NoConfigFileFoundException(List<String> possibleConfigFilePaths) {
-        super();
+        super("No configuration file found");
         this.possibleConfigFilePaths = possibleConfigFilePaths;
     }
 
     @Override
-    protected String problem() {
+    public String problem() {
         return "No valid configuration file found.";
     }
 
     @Override
-    protected String solution() {
+    public String solution() {
         final String listOfPaths = possibleConfigFilePaths
             .stream()
             .map("  - @|bold %s|@"::formatted)
@@ -37,7 +37,7 @@ public class NoConfigFileFoundException extends ZenRuntimeException {
     }
 
     @Override
-    protected List<String> links() {
+    public List<String> links() {
         return Collections.emptyList();
     }
 }

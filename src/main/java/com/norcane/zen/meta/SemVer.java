@@ -1,7 +1,5 @@
 package com.norcane.zen.meta;
 
-import com.norcane.zen.ui.PrettyPrintable;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -9,12 +7,12 @@ import java.util.regex.Pattern;
  * Simple implementation of version using the <a href="https://semver.org">Semantic versioning</a> specification. Supports basic operations such as parsing,
  * pretty printing and comparing with other version.
  *
- * @param major major version
- * @param minor minor version
- * @param patch patch level
+ * @param major  major version
+ * @param minor  minor version
+ * @param patch  patch level
  * @param suffix additional suffix (such as {@code SNAPSHOT}), may be null
  */
-public record SemVer(int major, int minor, int patch, String suffix) implements Comparable<SemVer>, PrettyPrintable {
+public record SemVer(int major, int minor, int patch, String suffix) implements Comparable<SemVer> {
 
     private static final Pattern pattern = Pattern.compile("(\\d+)\\.(\\d+)\\.(\\d+)(?:-([a-zA-Z\\d]+))?");
 
@@ -85,7 +83,7 @@ public record SemVer(int major, int minor, int patch, String suffix) implements 
     }
 
     @Override
-    public String toPretty() {
+    public String toString() {
         return suffix != null
                ? "%d.%d.%d-%s".formatted(major, minor, patch, suffix)
                : "%d.%d.%d".formatted(major, minor, patch);

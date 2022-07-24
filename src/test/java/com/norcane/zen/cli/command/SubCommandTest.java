@@ -1,7 +1,7 @@
 package com.norcane.zen.cli.command;
 
 import com.norcane.zen.resource.exception.ResourceNotFoundException;
-import com.norcane.zen.ui.Console;
+import com.norcane.zen.ui.console.Console;
 
 import org.junit.jupiter.api.Test;
 

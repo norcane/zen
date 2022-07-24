@@ -11,13 +11,13 @@ public class DuplicateTemplatesFoundException extends ZenRuntimeException {
     private final List<String> paths;
 
     public DuplicateTemplatesFoundException(String type, List<String> paths) {
-        super();
+        super("Multiple templates found for source file type '%s'".formatted(type));
         this.type = Objects.requireNonNull(type);
         this.paths = Objects.requireNonNull(paths);
     }
 
     @Override
-    protected String problem() {
+    public String problem() {
         final String listOfPaths = paths.stream()
             .map("  - @|bold s|@"::formatted)
             .collect(Collectors.joining("\n"));
@@ -29,12 +29,12 @@ public class DuplicateTemplatesFoundException extends ZenRuntimeException {
     }
 
     @Override
-    protected String solution() {
+    public String solution() {
         return "Make sure that only one template is present for selected file type";
     }
 
     @Override
-    protected List<String> links() {
+    public List<String> links() {
         return List.of();
     }
 }

@@ -4,6 +4,9 @@ import com.norcane.zen.meta.ProductInfo;
 
 import java.util.List;
 
+/**
+ * Wrapper exception for some unexpected behaviour or state, with might be caused by bug.
+ */
 public class UnexpectedBehaviorException extends ZenRuntimeException {
 
     public UnexpectedBehaviorException(final String message) {
@@ -15,7 +18,7 @@ public class UnexpectedBehaviorException extends ZenRuntimeException {
     }
 
     @Override
-    protected String problem() {
+    public String problem() {
         return """
             Unexpected error occurred during application execution:
                         
@@ -23,12 +26,12 @@ public class UnexpectedBehaviorException extends ZenRuntimeException {
     }
 
     @Override
-    protected String solution() {
+    public String solution() {
         return "This might be application bug. Please report it using the link below.";
     }
 
     @Override
-    protected List<String> links() {
+    public List<String> links() {
         return List.of(ProductInfo.linkReportBug());
     }
 }

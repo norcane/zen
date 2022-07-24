@@ -2,7 +2,9 @@ package com.norcane.zen.cli.command;
 
 import com.norcane.zen.exception.ZenRuntimeException;
 import com.norcane.zen.meta.ProductInfo;
-import com.norcane.zen.ui.Console;
+import com.norcane.zen.ui.console.Console;
+import com.norcane.zen.ui.exception.ZenRuntimeExceptionPrinter;
+import com.norcane.zen.ui.header.Header;
 
 import io.quarkus.logging.Log;
 
@@ -34,12 +36,13 @@ public abstract class SubCommand implements Runnable {
      * Prints product header info.
      */
     protected void printProductHeader() {
-        console.print(ProductInfo.productHeader());
+        console.printLn(ProductInfo.productHeader());
     }
 
     void handleZenRuntimeException(ZenRuntimeException e) {
         Log.error(e);
-        console.emptyLine();
-        console.error(e);
+        console.printLn("");
+        console.render(Header.error(e.getMessage()));
+        console.render(ZenRuntimeExceptionPrinter.of(e));
     }
 }

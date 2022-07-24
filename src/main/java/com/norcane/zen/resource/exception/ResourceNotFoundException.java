@@ -21,17 +21,17 @@ public class ResourceNotFoundException extends ZenRuntimeException {
     }
 
     @Override
-    protected String problem() {
+    public String problem() {
         return "Resource not found: %s".formatted(location);
     }
 
     @Override
-    protected String solution() {
+    public String solution() {
         return "Please check if given resource exists.";
     }
 
     @Override
-    protected List<String> links() {
+    public List<String> links() {
         return Collections.emptyList();
     }
 }

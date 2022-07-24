@@ -15,12 +15,12 @@ public class InvalidConfigurationException extends ZenRuntimeException {
     private final Set<ConstraintViolation<AppConfig>> violations;
 
     public InvalidConfigurationException(Set<ConstraintViolation<AppConfig>> violations) {
-        super(violations.toString());
+        super("Invalid configuration, found %d problems".formatted(violations.size()));
         this.violations = violations;
     }
 
     @Override
-    protected String problem() {
+    public String problem() {
         return """
             Provided application config source is invalid and has following issues:
                         
@@ -29,12 +29,12 @@ public class InvalidConfigurationException extends ZenRuntimeException {
     }
 
     @Override
-    protected String solution() {
+    public String solution() {
         return "Please check the error messages above and correct the configuration appropriately.";
     }
 
     @Override
-    protected List<String> links() {
+    public List<String> links() {
         return Collections.emptyList();
     }
 

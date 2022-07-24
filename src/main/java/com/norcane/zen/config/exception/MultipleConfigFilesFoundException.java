@@ -11,12 +11,12 @@ public class MultipleConfigFilesFoundException extends ZenRuntimeException {
     private final List<String> foundConfigFilePaths;
 
     public MultipleConfigFilesFoundException(List<String> foundConfigFilePaths) {
-        super();
+        super("Multiple configuration files found");
         this.foundConfigFilePaths = foundConfigFilePaths;
     }
 
     @Override
-    protected String problem() {
+    public String problem() {
         final String listOfPaths = foundConfigFilePaths
             .stream()
             .map("  - @|bold %s|@"::formatted)
@@ -30,12 +30,12 @@ public class MultipleConfigFilesFoundException extends ZenRuntimeException {
     }
 
     @Override
-    protected String solution() {
+    public String solution() {
         return "Please make sure that only one configuration file exists.";
     }
 
     @Override
-    protected List<String> links() {
+    public List<String> links() {
         return Collections.emptyList();
     }
 }

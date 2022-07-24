@@ -16,12 +16,12 @@ public class ConfigParseException extends ZenRuntimeException {
     }
 
     @Override
-    protected String problem() {
+    public String problem() {
         return "Error loading configuration file %s: %s".formatted(source, cause.getMessage());
     }
 
     @Override
-    protected String solution() {
+    public String solution() {
         return """
             Please check that some of the following isn't wrong:
                         
@@ -31,7 +31,7 @@ public class ConfigParseException extends ZenRuntimeException {
     }
 
     @Override
-    protected List<String> links() {
+    public List<String> links() {
         return Collections.emptyList();
     }
 }

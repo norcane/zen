@@ -15,17 +15,17 @@ public class MissingConfigVersionException extends ZenRuntimeException {
     }
 
     @Override
-    protected String problem() {
+    public String problem() {
         return "Cannot parse configuration version from %s".formatted(source);
     }
 
     @Override
-    protected String solution() {
+    public String solution() {
         return "Please make sure that the info about minimum compatible version is present in the configuration file.";
     }
 
     @Override
-    protected List<String> links() {
+    public List<String> links() {
         return Collections.emptyList();
     }
 }

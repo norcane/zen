@@ -17,19 +17,19 @@ public class CannotReadResourceException extends ZenRuntimeException {
     }
 
     @Override
-    protected String problem() {
+    public String problem() {
         return "Cannot read resource %s".formatted(resource.location());
     }
 
     @Override
-    protected String solution() {
+    public String solution() {
         return """
             Very likely the given resource exists, but either might be a directory instead of a file,\
             or the file isn't readable (missing privileges). Please check if the given path is correct.""";
     }
 
     @Override
-    protected List<String> links() {
+    public List<String> links() {
         return Collections.emptyList();
     }
 }
