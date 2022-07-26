@@ -9,6 +9,7 @@ import com.norcane.zen.resource.Resource;
 import com.norcane.zen.resource.ResourceManager;
 import com.norcane.zen.support.java.JavaSourceCode;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -39,6 +40,11 @@ class SourceCodeManagerTest {
     @Inject
     SourceCodeManager sourceCodeManager;
 
+    @BeforeEach
+    void beforeEach() {
+        sourceCodeManager.resetMemoizedState();
+    }
+
     @Test
     void sourceCodePaths() {
         final String sourcePath = "source-path";
@@ -60,11 +66,11 @@ class SourceCodeManagerTest {
         final String sourcePath = "source-path";
         final AppConfig appConfig = AppConfigBuilder.builder().sources(List.of(sourcePath)).build();
         final AppConfigRef appConfigRef = AppConfigRefBuilder.builder().config(appConfig).build();
-        final Resource resouce = Resource.inline("test", "java", "imagine some java code here");
+        final Resource resource = Resource.inline("test", "java", "imagine some java code here");
 
         // -- mocks
         when(appConfigManager.finalConfigRef()).thenReturn(appConfigRef);
-        when(resourceManager.resources(eq(sourcePath), any())).thenReturn(List.of(resouce));
+        when(resourceManager.resources(eq(sourcePath), any())).thenReturn(List.of(resource));
 
         final List<SourceCode> sourceCodes = sourceCodeManager.sourceCodes();
         assertEquals(1, sourceCodes.size());

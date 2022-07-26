@@ -19,4 +19,14 @@ public class NoopConsole implements Console {
     public void printLn(String text) {
         // do nothing
     }
+
+    @Override
+    public void clearLine() {
+        // do nothing
+    }
+
+    @Override
+    public boolean cursorMovementSupported() {
+        return false;
+    }
 }

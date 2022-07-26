@@ -25,6 +25,18 @@ public interface Console {
     void printLn(String text);
 
     /**
+     * Clears current line if supported by underlying terminal implementation, otherwise does nothing.
+     */
+    void clearLine();
+
+    /**
+     * Detects whether current terminal implementation supports cursor movement (might be required for example by {@link Console#clearLine()}).
+     *
+     * @return {@code true} if cursor movement is supported
+     */
+    boolean cursorMovementSupported();
+
+    /**
      * Renders given {@link UIComponent} to the console.
      *
      * @param component component to render

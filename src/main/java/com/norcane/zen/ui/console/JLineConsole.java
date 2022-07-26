@@ -1,16 +1,16 @@
 package com.norcane.zen.ui.console;
 
-import com.norcane.zen.exception.UnexpectedBehaviorException;
-
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
+import org.jline.utils.InfoCmp;
 
 import java.io.IOException;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
 
-import io.quarkus.logging.Log;
+import io.quarkus.runtime.LaunchMode;
 import picocli.CommandLine;
 
 /**
@@ -19,24 +19,20 @@ import picocli.CommandLine;
 @ApplicationScoped
 public class JLineConsole implements Console {
 
-    private final Terminal terminal;
+    private boolean cursorMovementSupported;
+    private Terminal terminal;
 
-    public JLineConsole() {
-        try {
-            this.terminal = TerminalBuilder.terminal();
-        } catch (IOException e) {
-            throw new UnexpectedBehaviorException("Error initializing jLine terminal", e);
-        }
+    @PostConstruct
+    void postConstruct() throws IOException {
+        this.terminal = TerminalBuilder.terminal();
+        this.cursorMovementSupported = LaunchMode.current() == LaunchMode.NORMAL &&
+                                       terminal.getStringCapability(InfoCmp.Capability.cursor_up) != null &&
+                                       terminal.getStringCapability(InfoCmp.Capability.cursor_down) != null;
     }
 
     @PreDestroy
-    void destroy() {
-        try {
-            this.terminal.close();
-        } catch (IOException e) {
-            // do not eventually propagate the exception further during application shutdown
-            Log.error(e);
-        }
+    void preDestroy() throws IOException {
+        this.terminal.close();
     }
 
     @Override
@@ -47,6 +43,19 @@ public class JLineConsole implements Console {
     @Override
     public void printLn(String text) {
         System.out.println(ansiString(text));
+    }
+
+    @Override
+    public void clearLine() {
+        if (this.cursorMovementSupported) {
+            print("\u001b[1000D");
+            print("\u001b[0K");
+        }
+    }
+
+    @Override
+    public boolean cursorMovementSupported() {
+        return this.cursorMovementSupported;
     }
 
     private String ansiString(final String text) {

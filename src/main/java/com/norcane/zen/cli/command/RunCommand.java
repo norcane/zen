@@ -1,10 +1,13 @@
 package com.norcane.zen.cli.command;
 
 import com.norcane.zen.config.AppConfigManager;
+import com.norcane.zen.source.SourceCode;
 import com.norcane.zen.source.SourceCodeManager;
 import com.norcane.zen.template.TemplateManager;
 import com.norcane.zen.ui.console.Console;
+import com.norcane.zen.ui.progressbar.ProgressBar;
 
+import java.util.List;
 import java.util.Objects;
 
 import javax.inject.Inject;
@@ -33,6 +36,19 @@ public class RunCommand extends SubCommand {
     @Override
     protected void execute() {
         printSummaryIntro();
+
+        final List<SourceCode> sourceCodes = sourceCodeManager.sourceCodes();
+
+        for (final SourceCode sourceCode : ProgressBar.wrap(sourceCodes,
+                                                            sc -> "Processing @|bold %s|@".formatted(sc.resource().location()),
+                                                            console)) {
+            try {
+                // FIXME implement
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     private void printSummaryIntro() {
