@@ -13,6 +13,13 @@ import java.util.function.Function;
 public interface ProgressBar extends InteractiveUIComponent {
 
     /**
+     * Current step of the progress bar. Can be progressed by calling {@link #step(String)}.
+     *
+     * @return current step
+     */
+    int current();
+
+    /**
      * Progresses one step in current progress bar status, with the given message to be shown.
      *
      * @param message message to be shown

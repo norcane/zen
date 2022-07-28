@@ -22,16 +22,22 @@ public class ConciseProgressBar implements ProgressBar {
     public void render(Console console) {
         final char spinner = SPINNER_FRAMES[current % SPINNER_MODULO];
         final String currentFormat = "%" + String.valueOf(maximum).length() + "s";
-        final String currentSpinner = console.cursorMovementSupported() ? "@|bold,magenta %s|@ ".formatted(spinner) : "";
+        final boolean cursorMovementSupported = console.cursorMovementSupported();
+        final String currentSpinner = cursorMovementSupported ? "@|bold,magenta %s|@ ".formatted(spinner) : "";
 
         final String rendered = "%s@|bold [%s of %d]|@ %s".formatted(currentSpinner, currentFormat.formatted(current), maximum, message);
 
-        if (console.cursorMovementSupported()) {
+        if (cursorMovementSupported) {
             console.clearLine();
             console.print(rendered);    // do not print newlines so updated progress bar can replace old
         } else {
             console.printLn(rendered);  // print every update on new line
         }
+    }
+
+    @Override
+    public int current() {
+        return this.current;
     }
 
     @Override

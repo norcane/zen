@@ -10,6 +10,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
 
+import io.quarkus.arc.Unremovable;
 import io.quarkus.runtime.LaunchMode;
 import picocli.CommandLine;
 
@@ -17,17 +18,15 @@ import picocli.CommandLine;
  * Implementation of {@link Console} using <a href="https://jline.github.io">jLine</a> as the terminal backend library.
  */
 @ApplicationScoped
+@Unremovable
 public class JLineConsole implements Console {
 
-    private boolean cursorMovementSupported;
+    private Boolean cursorMovementSupported;
     private Terminal terminal;
 
     @PostConstruct
     void postConstruct() throws IOException {
         this.terminal = TerminalBuilder.terminal();
-        this.cursorMovementSupported = LaunchMode.current() == LaunchMode.NORMAL &&
-                                       terminal.getStringCapability(InfoCmp.Capability.cursor_up) != null &&
-                                       terminal.getStringCapability(InfoCmp.Capability.cursor_down) != null;
     }
 
     @PreDestroy
@@ -47,7 +46,7 @@ public class JLineConsole implements Console {
 
     @Override
     public void clearLine() {
-        if (this.cursorMovementSupported) {
+        if (cursorMovementSupported()) {
             print("\u001b[1000D");
             print("\u001b[0K");
         }
@@ -55,6 +54,12 @@ public class JLineConsole implements Console {
 
     @Override
     public boolean cursorMovementSupported() {
+        if (this.cursorMovementSupported == null) {
+            this.cursorMovementSupported = LaunchMode.current() == LaunchMode.NORMAL &&
+                                           terminal.getStringCapability(InfoCmp.Capability.cursor_up) != null &&
+                                           terminal.getStringCapability(InfoCmp.Capability.cursor_down) != null;
+        }
+
         return this.cursorMovementSupported;
     }
 
