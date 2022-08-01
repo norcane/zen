@@ -2,7 +2,7 @@ package com.norcane.zen.source;
 
 import com.norcane.zen.resource.Resource;
 import com.norcane.zen.resource.exception.CannotReadResourceException;
-import com.norcane.zen.source.headersyntax.CStyleBlockHeaderSyntax;
+import com.norcane.zen.source.syntax.CStyleBlockCommentSyntax;
 
 import org.junit.jupiter.api.Test;
 
@@ -27,7 +27,7 @@ class AbstractSourceCodeTest {
     void header_exceptionThrown() {
         final Resource resource = mock(Resource.class);
 
-        final SourceCode sourceCode = SourceCode.of(new CStyleBlockHeaderSyntax(), resource);
+        final SourceCode sourceCode = SourceCode.of(CStyleBlockCommentSyntax.instance(), resource);
 
         // mocks
         doAnswer(invocation -> {
@@ -52,7 +52,7 @@ class AbstractSourceCodeTest {
                                 
                 some code here
                 """);
-        final SourceCode sourceCode = SourceCode.of(new CStyleBlockHeaderSyntax(), resource);
+        final SourceCode sourceCode = SourceCode.of(CStyleBlockCommentSyntax.instance(), resource);
         assertTrue(sourceCode.header().isEmpty());
 
     }
@@ -73,7 +73,7 @@ class AbstractSourceCodeTest {
                  
                 some code here
                  """);
-        final SourceCode sourceCode = SourceCode.of(new CStyleBlockHeaderSyntax(), resource);
+        final SourceCode sourceCode = SourceCode.of(CStyleBlockCommentSyntax.instance(), resource);
 
         final SourceCode.Header expected = new SourceCode.Header(5, 7, List.of("/*", " * this is header", " */"));
         assertEquals(Optional.of(expected), sourceCode.header());
@@ -94,7 +94,7 @@ class AbstractSourceCodeTest {
                  
                 some code here
                  """);
-        final SourceCode sourceCode = SourceCode.of(new CStyleBlockHeaderSyntax(), resource);
+        final SourceCode sourceCode = SourceCode.of(CStyleBlockCommentSyntax.instance(), resource);
 
         final SourceCode.Header expected = new SourceCode.Header(6, 6, List.of("/* this is header */"));
         assertEquals(Optional.of(expected), sourceCode.header());
@@ -104,7 +104,7 @@ class AbstractSourceCodeTest {
     @Test
     void resource() {
         final Resource resource = Resource.inline("test", "test", "some text");
-        final SourceCode sourceCode = SourceCode.of(new CStyleBlockHeaderSyntax(), resource);
+        final SourceCode sourceCode = SourceCode.of(CStyleBlockCommentSyntax.instance(), resource);
 
         assertEquals(resource, sourceCode.resource());
     }
@@ -112,7 +112,7 @@ class AbstractSourceCodeTest {
     @Test
     void of() {
         final Resource resource = Resource.inline("test", "test", "some text");
-        final SourceCode sourceCode = SourceCode.of(new CStyleBlockHeaderSyntax(), resource);
+        final SourceCode sourceCode = SourceCode.of(CStyleBlockCommentSyntax.instance(), resource);
 
         assertEquals(resource, sourceCode.resource());
         assertTrue(sourceCode.variables().isEmpty());
@@ -120,7 +120,7 @@ class AbstractSourceCodeTest {
 
     @Test
     void testToString() {
-        final SourceCode sourceCode = SourceCode.of(new CStyleBlockHeaderSyntax(), Resource.inline("test", "test", "some text"));
+        final SourceCode sourceCode = SourceCode.of(CStyleBlockCommentSyntax.instance(), Resource.inline("test", "test", "some text"));
         assertNotNull(sourceCode.toString());
     }
 }

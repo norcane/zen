@@ -1,7 +1,7 @@
 package com.norcane.zen.source;
 
 import com.norcane.zen.resource.Resource;
-import com.norcane.zen.source.headersyntax.HeaderSyntax;
+import com.norcane.zen.source.syntax.CommentSyntax;
 
 import java.util.List;
 import java.util.Map;
@@ -18,8 +18,8 @@ public interface SourceCode {
     record Header(int startLine, int endLine, List<String> lines) {
     }
 
-    static SourceCode of(HeaderSyntax headerSyntax, Resource resource) {
-        return new AbstractSourceCode(headerSyntax, resource) {
+    static SourceCode of(CommentSyntax commentSyntax, Resource resource) {
+        return new AbstractSourceCode(commentSyntax, resource) {
 
             @Override
             public Map<String, Object> variables() {

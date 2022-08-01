@@ -2,8 +2,8 @@ package com.norcane.zen.support.java;
 
 import com.norcane.zen.resource.Resource;
 import com.norcane.zen.source.SourceCode;
-import com.norcane.zen.source.headersyntax.CStyleBlockHeaderSyntax;
-import com.norcane.zen.source.headersyntax.HeaderSyntax;
+import com.norcane.zen.source.syntax.CStyleBlockCommentSyntax;
+import com.norcane.zen.source.syntax.CommentSyntax;
 import com.norcane.zen.support.LanguageSupport;
 
 import java.util.Set;
@@ -28,8 +28,8 @@ public class JavaSupport implements LanguageSupport {
 
     @Override
     public SourceCode analyze(Resource resource) {
-        final HeaderSyntax headerSyntax = new CStyleBlockHeaderSyntax();  // FIXME choose this based on configuration
+        final CommentSyntax commentSyntax = CStyleBlockCommentSyntax.instance();  // FIXME choose this based on configuration
 
-        return new JavaSourceCode(headerSyntax, resource);
+        return new JavaSourceCode(commentSyntax, resource);
     }
 }

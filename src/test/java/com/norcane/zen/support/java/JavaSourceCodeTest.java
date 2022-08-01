@@ -2,8 +2,8 @@ package com.norcane.zen.support.java;
 
 import com.norcane.zen.resource.ResourceManager;
 import com.norcane.zen.source.SourceCode;
-import com.norcane.zen.source.headersyntax.CStyleBlockHeaderSyntax;
-import com.norcane.zen.source.headersyntax.HeaderSyntax;
+import com.norcane.zen.source.syntax.CStyleBlockCommentSyntax;
+import com.norcane.zen.source.syntax.CommentSyntax;
 
 import org.junit.jupiter.api.Test;
 
@@ -21,14 +21,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class JavaSourceCodeTest {
 
     static final String sample = "classpath:/sources/java/sample-block-multi.java.txt";
-    static final HeaderSyntax headerSyntax = new CStyleBlockHeaderSyntax();
+    static final CommentSyntax COMMENT_SYNTAX = CStyleBlockCommentSyntax.instance();
 
     @Inject
     ResourceManager resourceManager;
 
     @Test
     void header() {
-        final SourceCode sourceCode = new JavaSourceCode(headerSyntax, resourceManager.resource(sample));
+        final SourceCode sourceCode = new JavaSourceCode(COMMENT_SYNTAX, resourceManager.resource(sample));
         final SourceCode.Header expected = new SourceCode.Header(1, 3, List.of("/*", " * This is header", " */"));
 
         assertEquals(Optional.of(expected), sourceCode.header());
@@ -36,7 +36,7 @@ class JavaSourceCodeTest {
 
     @Test
     void variables() {
-        final SourceCode sourceCode = new JavaSourceCode(headerSyntax, resourceManager.resource(sample));
+        final SourceCode sourceCode = new JavaSourceCode(COMMENT_SYNTAX, resourceManager.resource(sample));
 
         assertTrue(sourceCode.variables().isEmpty());
     }

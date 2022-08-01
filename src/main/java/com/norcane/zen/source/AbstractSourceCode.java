@@ -4,7 +4,7 @@ import com.google.common.base.MoreObjects;
 
 import com.norcane.zen.resource.Resource;
 import com.norcane.zen.resource.exception.CannotReadResourceException;
-import com.norcane.zen.source.headersyntax.HeaderSyntax;
+import com.norcane.zen.source.syntax.CommentSyntax;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,13 +16,13 @@ import java.util.Optional;
 
 public abstract class AbstractSourceCode implements SourceCode {
 
-    private final HeaderSyntax headerSyntax;
+    private final CommentSyntax commentSyntax;
     private final Resource resource;
 
-    protected AbstractSourceCode(final HeaderSyntax headerSyntax,
+    protected AbstractSourceCode(final CommentSyntax commentSyntax,
                                  final Resource resource) {
 
-        this.headerSyntax = Objects.requireNonNull(headerSyntax);
+        this.commentSyntax = Objects.requireNonNull(commentSyntax);
         this.resource = Objects.requireNonNull(resource);
     }
 
@@ -42,18 +42,18 @@ public abstract class AbstractSourceCode implements SourceCode {
                     break;
                 }
 
-                if (headerStart < 0 && headerSyntax.isStart(line)) {
+                if (headerStart < 0 && commentSyntax.isStart(line)) {
                     headerStart = lineNumber;
                     lines.add(line);     // FIXME proper line handling
 
-                    if (headerSyntax.isEnd(line)) {
+                    if (commentSyntax.isEnd(line)) {
                         headerEnd = lineNumber;
                         break;
                     }
                 } else if (headerStart > 0) {
                     lines.add(line);     // FIXME proper line handling
 
-                    if (headerSyntax.isEnd(line)) {
+                    if (commentSyntax.isEnd(line)) {
                         headerEnd = lineNumber;
                         break;
                     }

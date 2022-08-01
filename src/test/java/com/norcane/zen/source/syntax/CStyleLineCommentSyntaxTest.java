@@ -1,4 +1,4 @@
-package com.norcane.zen.source.headersyntax;
+package com.norcane.zen.source.syntax;
 
 import org.junit.jupiter.api.Test;
 
@@ -8,9 +8,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @QuarkusTest
-class CStyleLineHeaderSyntaxTest {
+class CStyleLineCommentSyntaxTest {
 
-    final HeaderSyntax syntax = new CStyleLineHeaderSyntax();
+    final CommentSyntax syntax = CStyleLineCommentSyntax.instance();
 
     @Test
     void isStart() {
