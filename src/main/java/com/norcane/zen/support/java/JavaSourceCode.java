@@ -2,7 +2,7 @@ package com.norcane.zen.support.java;
 
 import com.norcane.zen.resource.Resource;
 import com.norcane.zen.source.AbstractSourceCode;
-import com.norcane.zen.source.header.HeaderSyntax;
+import com.norcane.zen.source.headersyntax.HeaderSyntax;
 
 import java.util.Map;
 

@@ -2,7 +2,7 @@ package com.norcane.zen.source;
 
 import com.norcane.zen.resource.Resource;
 import com.norcane.zen.resource.exception.CannotReadResourceException;
-import com.norcane.zen.source.header.CStyleBlockHeaderSyntax;
+import com.norcane.zen.source.headersyntax.CStyleBlockHeaderSyntax;
 
 import org.junit.jupiter.api.Test;
 

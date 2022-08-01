@@ -37,6 +37,13 @@ public interface Console {
     boolean cursorMovementSupported();
 
     /**
+     * Prints empty line to the console.
+     */
+    default void emptyLine() {
+        printLn("");
+    }
+
+    /**
      * Renders given {@link UIComponent} to the console.
      *
      * @param component component to render
@@ -44,6 +51,4 @@ public interface Console {
     default void render(final UIComponent component) {
         component.render(this);
     }
-
-
 }

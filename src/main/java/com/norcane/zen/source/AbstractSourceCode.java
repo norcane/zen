@@ -4,7 +4,7 @@ import com.google.common.base.MoreObjects;
 
 import com.norcane.zen.resource.Resource;
 import com.norcane.zen.resource.exception.CannotReadResourceException;
-import com.norcane.zen.source.header.HeaderSyntax;
+import com.norcane.zen.source.headersyntax.HeaderSyntax;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -1,7 +1,7 @@
 package com.norcane.zen.ui.console;
 
 import com.norcane.zen.ui.UIComponent;
-import com.norcane.zen.ui.header.Header;
+import com.norcane.zen.ui.alert.Alert;
 
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +17,7 @@ class ConsoleTest {
 
     @Test
     void render() {
-        final UIComponent component = Header.info("Hello, world!");
+        final UIComponent component = Alert.info("Hello, world!");
         console.render(component);
     }
 }

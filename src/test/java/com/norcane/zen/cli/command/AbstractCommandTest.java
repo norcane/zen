@@ -11,37 +11,37 @@ import io.quarkus.test.junit.mockito.InjectMock;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @QuarkusTest
-class SubCommandTest {
+class AbstractCommandTest {
 
     @InjectMock
     Console console;
 
     @Test
     void run() {
-        final TestSubCommand command = new TestSubCommand(console);
+        final TestCommand command = new TestCommand(console);
 
-        command.run();
+        command.call();
         assertTrue(command.executed);
     }
 
     @Test
     void printProductHeader() {
-        final SubCommand command = new TestSubCommand(console);
+        final AbstractCommand command = new TestCommand(console);
 
         command.printProductHeader();
     }
 
 
-    static class TestSubCommand extends SubCommand {
+    static class TestCommand extends AbstractCommand {
 
         boolean executed = false;
 
-        public TestSubCommand(Console console) {
+        public TestCommand(Console console) {
             super(console);
         }
 
         @Override
-        protected void execute() {
+        protected int execute() {
             executed = true;
             throw new ResourceNotFoundException("testing exception handling");
         }

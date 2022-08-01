@@ -1,8 +1,11 @@
 package com.norcane.zen.cli.command;
 
 import com.norcane.zen.config.AppConfigManager;
+import com.norcane.zen.config.model.AppConfig;
 import com.norcane.zen.source.SourceCode;
 import com.norcane.zen.source.SourceCodeManager;
+import com.norcane.zen.source.processor.AddHeaderProcessor;
+import com.norcane.zen.source.processor.SourceProcessor;
 import com.norcane.zen.template.TemplateManager;
 import com.norcane.zen.ui.console.Console;
 import com.norcane.zen.ui.progressbar.ProgressBar;
@@ -15,7 +18,7 @@ import javax.inject.Inject;
 import picocli.CommandLine;
 
 @CommandLine.Command(name = "run", description = "adds copyright headers")
-public class RunCommand extends SubCommand {
+public class RunCommand extends AbstractCommand {
 
     private final AppConfigManager appConfigManager;
     private final SourceCodeManager sourceCodeManager;
@@ -34,22 +37,27 @@ public class RunCommand extends SubCommand {
     }
 
     @Override
-    protected void execute() {
+    protected int execute() {
         printSummaryIntro();
 
+        final AppConfig appConfig = appConfigManager.finalConfigRef().config();
         final List<SourceCode> sourceCodes = sourceCodeManager.sourceCodes();
 
-        for (final SourceCode sourceCode : ProgressBar.wrap(sourceCodes,
-                                                            sc -> "Processing @|bold %s|@".formatted(sc.resource().location()),
-                                                            console)) {
-            try {
-                // FIXME implement
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+        final SourceProcessor processor = switch (appConfig.mode()) {
+            case ADD -> new AddHeaderProcessor(console);
+            case DROP -> throw new UnsupportedOperationException("not implemented yet");
+            case REPLACE -> throw new UnsupportedOperationException("not implemented yet");
+        };
+
+        for (final SourceCode sourceCode : ProgressBar.wrap(sourceCodes, processor::progressMessage, console)) {
+            // TODO implement
         }
+
+        console.emptyLine();
+        processor.printSummary();
+        return processor.returnCode();
     }
+
 
     private void printSummaryIntro() {
         final int numberOfTemplates = templateManager.templates().size();

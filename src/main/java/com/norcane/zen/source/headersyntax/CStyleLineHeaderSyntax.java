@@ -1,4 +1,4 @@
-package com.norcane.zen.source.header;
+package com.norcane.zen.source.headersyntax;
 
 import java.util.regex.Pattern;
 

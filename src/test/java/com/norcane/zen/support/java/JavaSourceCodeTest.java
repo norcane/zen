@@ -2,8 +2,8 @@ package com.norcane.zen.support.java;
 
 import com.norcane.zen.resource.ResourceManager;
 import com.norcane.zen.source.SourceCode;
-import com.norcane.zen.source.header.CStyleBlockHeaderSyntax;
-import com.norcane.zen.source.header.HeaderSyntax;
+import com.norcane.zen.source.headersyntax.CStyleBlockHeaderSyntax;
+import com.norcane.zen.source.headersyntax.HeaderSyntax;
 
 import org.junit.jupiter.api.Test;
 
